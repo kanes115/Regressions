@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2016-12-28 20:47:09.204456 UTC
+2016-12-30 18:15:28.933832 UTC
 
-interface Regression-0.1.0.0-5KiuTBgyrDsucRw8WHsu1:Matrix 8001
-  interface hash: 7f3bfc5ac5c75171dac99cc3419255b2
-  ABI hash: 8f3a604d1092646ab7c08782b9512a9b
-  export-list hash: 4a7c482fda98fcccf55ed668c6aa8c16
+interface Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Matrix 8001
+  interface hash: 34f10d194831669ca720bcd8ef641f5f
+  ABI hash: 7769eaa6888511df16e6097884d7f7f7
+  export-list hash: 322b765e82d88335cc249308db1cb917
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: a4046e0fdab24403354cf30558c1ea1c
   sig of: Nothing
@@ -14,7 +14,10 @@ interface Regression-0.1.0.0-5KiuTBgyrDsucRw8WHsu1:Matrix 8001
 exports:
   Matrix.conhor
   Matrix.conver
+  Matrix.deleteColumns
   Matrix.emptyM
+  Matrix.filterLinesHor
+  Matrix.filterLinesVer
   Matrix.findAMostQuadraticEdgeSize
   Matrix.findEdgeSizes
   Matrix.howManyElements
@@ -27,7 +30,7 @@ exports:
   Matrix.vector
   Matrix.zipWithLines
   Matrix.zipWithM
-  Matrix.Matrix
+  Matrix.Matrix{Matrix.EmptyM Matrix.Matrix}
 module dependencies:
 package dependencies: base-4.9.0.0* ghc-prim-0.5.0.0
                       integer-gmp-1.0.0.1
@@ -48,7 +51,7 @@ import  -/  base-4.9.0.0:GHC.Real 08bf4acb5f2508f89d6fbcd57fe232e9
 import  -/  base-4.9.0.0:GHC.Show 952347a6ab730bcb25c0854d8bc6ca51
 import  -/  base-4.9.0.0:Prelude b9bddb97799837fe67a8d00939a5b6c3
 import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fEqMatrix :: GHC.Classes.Eq a => GHC.Classes.Eq (Matrix.Matrix a)
   DFunId
   {- Arity: 1, Strictness: <L,U(C(C1(U)),A)>m,
@@ -57,10 +60,10 @@ cd41d90daf9505c8859bde24bac4486e
                   @ (Matrix.Matrix a)
                   (Matrix.$fEqMatrix_$c== @ a $dEq)
                   (Matrix.$fEqMatrix_$c/= @ a $dEq) -}
-0013b60f582b7d623b93b98676645331
+b8e3d8f5f50b5f0dcaea3abebc867882
   $fEqMatrix1 :: [[a]]
   {- Strictness: x -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fEqMatrix_$c/= ::
     GHC.Classes.Eq a =>
     Matrix.Matrix a -> Matrix.Matrix a -> GHC.Types.Bool
@@ -72,7 +75,7 @@ cd41d90daf9505c8859bde24bac4486e
                    (x :: Matrix.Matrix a)
                    (y :: Matrix.Matrix a) ->
                  GHC.Classes.not (Matrix.$fEqMatrix_$c== @ a $dEq x y)) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fEqMatrix_$c== ::
     GHC.Classes.Eq a =>
     Matrix.Matrix a -> Matrix.Matrix a -> GHC.Types.Bool
@@ -92,10 +95,10 @@ cd41d90daf9505c8859bde24bac4486e
                    -> case Matrix.$fEqMatrix1 ret_ty GHC.Types.Bool of {}
                    Matrix.Matrix xs
                    -> (Matrix.$fEqMatrix_go xs) `cast` (Data.Monoid.N:All[0]) }) -}
-894f50ea1c703673ed62302f9e9ce848
+f0ae6e44e9003777f28df9bfa17af8db
   $fEqMatrix_go :: [[GHC.Types.Bool]] -> Data.Monoid.All
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U> -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fFunctorMatrix :: GHC.Base.Functor Matrix.Matrix
   DFunId
   {- Strictness: m, Inline: [ALWAYS] CONLIKE,
@@ -103,17 +106,17 @@ cd41d90daf9505c8859bde24bac4486e
                   @ Matrix.Matrix
                   Matrix.$fFunctorMatrix_$cfmap
                   Matrix.$fFunctorMatrix_$c<$ -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fFunctorMatrix_$c<$ :: a -> Matrix.Matrix b -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,U><S,1*U>,
      Unfolding: InlineRule (2, True, False)
                 (\ @ a @ b (eta :: a) (eta1 :: Matrix.Matrix b) ->
                  Matrix.$fFunctorMatrix_$cfmap @ b @ a (\ (ds :: b) -> eta) eta1) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fFunctorMatrix_$cfmap ::
     (a -> b) -> Matrix.Matrix a -> Matrix.Matrix b
   {- Arity: 2, Strictness: <L,C(U)><S,1*U> -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix :: GHC.Num.Num a => GHC.Num.Num (Matrix.Matrix a)
   DFunId
   {- Arity: 1,
@@ -128,10 +131,10 @@ cd41d90daf9505c8859bde24bac4486e
                   (Matrix.$fNumMatrix_$cabs @ a $dNum)
                   (Matrix.$fNumMatrix_$csignum @ a $dNum)
                   (Matrix.$fNumMatrix_$cfromInteger @ a $dNum) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix1 :: GHC.Integer.Type.Integer -> Matrix.Matrix a
   {- Strictness: x -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$c* ::
     GHC.Num.Num a =>
     Matrix.Matrix a -> Matrix.Matrix a -> Matrix.Matrix a
@@ -143,7 +146,7 @@ cd41d90daf9505c8859bde24bac4486e
                    (eta :: Matrix.Matrix a)
                    (eta1 :: Matrix.Matrix a) ->
                  Matrix.zipWithM @ a @ a @ a (GHC.Num.* @ a $dNum) eta eta1) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$c+ ::
     GHC.Num.Num a =>
     Matrix.Matrix a -> Matrix.Matrix a -> Matrix.Matrix a
@@ -155,7 +158,7 @@ cd41d90daf9505c8859bde24bac4486e
                    (eta :: Matrix.Matrix a)
                    (eta1 :: Matrix.Matrix a) ->
                  Matrix.zipWithM @ a @ a @ a (GHC.Num.+ @ a $dNum) eta eta1) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$c- ::
     GHC.Num.Num a =>
     Matrix.Matrix a -> Matrix.Matrix a -> Matrix.Matrix a
@@ -172,7 +175,7 @@ cd41d90daf9505c8859bde24bac4486e
                    $dNum
                    x
                    (Matrix.$fNumMatrix_$cnegate @ a $dNum y)) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$cabs ::
     GHC.Num.Num a => Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,1*U(A,A,A,A,1*C(U),A,A)><S,1*U>,
@@ -183,13 +186,13 @@ cd41d90daf9505c8859bde24bac4486e
                    @ a
                    (GHC.Num.abs @ a $dNum)
                    eta) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$cfromInteger ::
     GHC.Num.Num a => GHC.Integer.Type.Integer -> Matrix.Matrix a
   {- Arity: 1, Strictness: <B,A>x,
      Unfolding: InlineRule (1, True, True)
                 (\ @ a ($dNum :: GHC.Num.Num a) -> Matrix.$fNumMatrix1 @ a) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$cnegate ::
     GHC.Num.Num a => Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,1*U(A,A,A,1*C(U),A,A,A)><S,1*U>,
@@ -200,7 +203,7 @@ cd41d90daf9505c8859bde24bac4486e
                    @ a
                    (GHC.Num.negate @ a $dNum)
                    eta) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fNumMatrix_$csignum ::
     GHC.Num.Num a => Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,1*U(A,A,A,A,A,1*C(U),A)><S,1*U>,
@@ -211,7 +214,7 @@ cd41d90daf9505c8859bde24bac4486e
                    @ a
                    (GHC.Num.signum @ a $dNum)
                    eta) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fShowMatrix :: GHC.Show.Show a => GHC.Show.Show (Matrix.Matrix a)
   DFunId
   {- Arity: 1, Strictness: <L,U(A,U,A)>m, Inline: [ALWAYS] CONLIKE,
@@ -220,16 +223,16 @@ cd41d90daf9505c8859bde24bac4486e
                   (Matrix.$fShowMatrix_$cshowsPrec @ a $dShow)
                   (Matrix.$fShowMatrix_$cshow @ a $dShow)
                   (Matrix.$fShowMatrix_$cshowList @ a $dShow) -}
-5a27b35a0cd17ef1312e70bf814083d1
+1d38f1d2ac9287b884886386c3029817
   $fShowMatrix1 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# " "#) -}
-6eb2bebe1c108baaa482ab91cac65163
+e962fd0fdf806e560106508f2d56ad44
   $fShowMatrix2 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "\n"#) -}
-38864e7c16cdac0188e9bd3822df5956
+694212de63d5b57541a784c97f3efe4d
   $fShowMatrix3 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString# "Empty matrix"#) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fShowMatrix_$cshow ::
     GHC.Show.Show a => Matrix.Matrix a -> GHC.Base.String
   {- Arity: 2, Strictness: <L,1*U(A,1*U,A)><S,1*U>,
@@ -266,7 +269,7 @@ cd41d90daf9505c8859bde24bac4486e
                                  : y ys -> GHC.Base.++ @ GHC.Types.Char (go1 y) (go2 ys) }
                            } in
                            go2 xs } }) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fShowMatrix_$cshowList ::
     GHC.Show.Show a => [Matrix.Matrix a] -> GHC.Show.ShowS
   {- Arity: 3, Strictness: <L,U(A,U,A)><S,1*U><L,U>,
@@ -283,7 +286,7 @@ cd41d90daf9505c8859bde24bac4486e
                       s1)
                    ls
                    s) -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   $fShowMatrix_$cshowsPrec ::
     GHC.Show.Show a =>
     GHC.Types.Int -> Matrix.Matrix a -> GHC.Show.ShowS
@@ -306,60 +309,88 @@ cd41d90daf9505c8859bde24bac4486e
                       n
                       (Matrix.$fShowMatrix_$cshow @ a $dShow x))
                    s) -}
-9c9676ceebda804c65aefef6295310da
+658be5f7e0538ae3ab408ac70a4f8a7b
   $fShowMatrix_z :: [GHC.Types.Char]
   {- Unfolding: (GHC.Base.++
                    @ GHC.Types.Char
                    Matrix.$fShowMatrix2
                    (GHC.Types.[] @ GHC.Types.Char)) -}
-b2dedb5a5dee64a5d3c420615ab48b78
+03e6821fd63fc6ff20ba6b766c45eee6
   $tc'EmptyM :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   12064590171336708257##
-                   12089057917759657442##
+                   10998939451333070695##
+                   13591662482535266634##
                    Matrix.$trModule
                    Matrix.$tc'EmptyM1) -}
-5c6d60200cc96c63c90a0de4f25eb9cf
+9215a3acadfdde400c2fd6bcc10de73c
   $tc'EmptyM1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'EmptyM"#) -}
-e107cc4b72b37f8d96414a881b27bfe1
+6fb38f5e009797391ffa17baadf474f0
   $tc'Matrix :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   6293140231020067370##
-                   6388155357835215663##
+                   9519218874261716999##
+                   14241207881608406365##
                    Matrix.$trModule
                    Matrix.$tc'Matrix1) -}
-6d8d058a030381b38f2200c0cfb35bb3
+1a0fa0ef3920b5f1b72809424f4282eb
   $tc'Matrix1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "'Matrix"#) -}
-54ec63ecdb90d39fccd47e8670acc29d
+2f15a8e14fd2afefe803bfa569cfd167
   $tcMatrix :: GHC.Types.TyCon
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.TyCon
-                   17688263989866285601##
-                   13803062789825512509##
+                   6879586085828880067##
+                   6167075844438285825##
                    Matrix.$trModule
                    Matrix.$trModule1) -}
-b965cb007d323cc63f4ca4cbca585077
+90ca189929dc2c55c0b3252a81416dc9
   $trModule :: GHC.Types.Module
   {- HasNoCafRefs, Strictness: m,
      Unfolding: (GHC.Types.Module
                    Matrix.$trModule2
                    Matrix.$trModule1) -}
-75cb4cd44034bcce3d800693e403db8a
+fc8262e8b372b6e16b1978650674318e
   $trModule1 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "Matrix"#) -}
-71e0bf67417fd28a3f1b01cdc25c1e44
+2c8fa4d13072e5b49b37cb2650944517
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS
-                   "Regression-0.1.0.0-5KiuTBgyrDsucRw8WHsu1"#) -}
-1ae9569f6be3933e255424e4c4891c9f
+                   "Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"#) -}
+e3b5c6c05547129978ebbe7335a3e3d8
+  $wfilterLinesVer ::
+    (a -> GHC.Types.Bool) -> Matrix.Matrix a -> (# [[a]] #)
+  {- Arity: 2, Strictness: <L,C(U)><L,1*U>, Inline: [0],
+     Unfolding: (\ @ a
+                   (w :: a -> GHC.Types.Bool)
+                   (w1 :: Matrix.Matrix a) ->
+                 (# case w1 of wild {
+                      Matrix.EmptyM -> case Matrix.$fEqMatrix1 ret_ty [[a]] of {}
+                      Matrix.Matrix xs
+                      -> GHC.List.filter
+                           @ [a]
+                           (\ (eta :: [a]) ->
+                            letrec {
+                              go1 :: [a] -> Data.Monoid.All {- Arity: 1, Strictness: <S,1*U> -}
+                              = \ (ds :: [a]) ->
+                                case ds of wild1 {
+                                  [] -> GHC.Types.True `cast` (Sym (Data.Monoid.N:All[0]))
+                                  : y ys
+                                  -> case w y of wild2 {
+                                       GHC.Types.False
+                                       -> GHC.Types.False `cast` (Sym (Data.Monoid.N:All[0]))
+                                       GHC.Types.True -> go1 ys } }
+                            } in
+                            go1 eta)
+                             `cast`
+                           (<[a]>_R ->_R Data.Monoid.N:All[0])
+                           xs } #)) -}
+58c63825e11b476b3ce11605602847af
   $whowManyElements :: Matrix.Matrix a -> GHC.Prim.Int#
   {- Arity: 1, Strictness: <S,1*U>, Inline: [0],
      Unfolding: (\ @ a (w :: Matrix.Matrix a) ->
@@ -373,22 +404,22 @@ b965cb007d323cc63f4ca4cbca585077
                         -> case GHC.List.$wlenAcc @ a x 0# of ww2 { DEFAULT ->
                            case GHC.List.$wlenAcc @ [a] xs 0# of ww1 { DEFAULT ->
                            GHC.Prim.*# ww2 (GHC.Prim.+# ww1 1#) } } } }) -}
-8defa084938e3c2ae963d86d1faf8757
+70c918763baa25c4875f17200f6cbfa8
   $wmakeListOfOneElementLists :: [a] -> (# [a], [[a]] #)
   {- Arity: 1, Strictness: <S,1*U>, Inline: [0] -}
-c40bffc521dea745427ca4b68ff42eb9
+595778d6561afb6a26a627b70c56e4ff
   type Axis = GHC.Types.Int
-39c80047a512140c81f380ee326b1c2d
+c05c1c6f2d5dc0102a7fe5e405ed8c3f
   type Height = GHC.Types.Int
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   data Matrix a = EmptyM | Matrix [[a]]
-fd8b208962e35e45ef00de1b49466d79
+0a8afe67efab4975e80e9fdf10644a73
   type Width = GHC.Types.Int
-edfda5e5d62fa9d80212f6004293666e
+1a69588f6ad4fd76020ab6544dec11ef
   concatHorizM ::
     Matrix.Matrix a -> Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 2, Strictness: <S,1*U><S,1*U> -}
-cf9dbf5250a8cf50af9a35e490165a06
+6352ebaa0c66619863611adc99773eec
   conhor ::
     Matrix.Matrix a
     -> Matrix.Matrix a -> GHC.Base.Maybe (Matrix.Matrix a)
@@ -412,10 +443,10 @@ cf9dbf5250a8cf50af9a35e490165a06
                              -> GHC.Base.Just
                                   @ (Matrix.Matrix a)
                                   (Matrix.concatHorizM @ a wild wild1) } } } } }) -}
-76110cdaff8daa160e6c439c70349510
+6bd4b20ad1117711d21e07940d520bd8
   conhor1 :: GHC.Base.Maybe (Matrix.Matrix a)
   {- Strictness: x -}
-0d6a8368885c22ae657da023e724f2dc
+5d1cc566f51e23c59b9e205cc09cce11
   conver ::
     Matrix.Matrix a
     -> Matrix.Matrix a -> GHC.Base.Maybe (Matrix.Matrix a)
@@ -447,14 +478,58 @@ cf9dbf5250a8cf50af9a35e490165a06
                                             (Matrix.Matrix
                                                @ a
                                                (GHC.Base.++ @ [a] wild1 wild3)) } } } } } } }) -}
-380c38bcfd256a8b85146329195bc069
+01af5cc431482e254b6c2de928c8b237
   conver1 :: GHC.Base.Maybe (Matrix.Matrix a)
   {- Strictness: x -}
-b4c0f37cea9c380bfa2a994008051875
+f29f92dc36f0b8991a4b2d0b51cd6ef9
+  deleteColumns ::
+    [GHC.Types.Int] -> Matrix.Matrix a -> Matrix.Matrix a
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
+135c8a94c296174c982055c5e2ea2ae1
   emptyM :: Matrix.Matrix a
   {- HasNoCafRefs,
      Unfolding: InlineRule (0, True, True) Matrix.EmptyM -}
-6233b6dfddc8bc94a254135b361d43ba
+05d9adba9f50fafc54f6c915eae3ef09
+  filterLinesHor ::
+    (a -> GHC.Types.Bool) -> Matrix.Matrix a -> Matrix.Matrix a
+  {- Arity: 2, Strictness: <L,C(U)><L,1*U>,
+     Unfolding: (\ @ a
+                   (f :: a -> GHC.Types.Bool)
+                   (eta :: Matrix.Matrix a) ->
+                 Matrix.transposeM
+                   @ a
+                   (Matrix.Matrix
+                      @ a
+                      (case Matrix.transposeM @ a eta of wild {
+                         Matrix.EmptyM -> case Matrix.$fEqMatrix1 ret_ty [[a]] of {}
+                         Matrix.Matrix xs
+                         -> GHC.List.filter
+                              @ [a]
+                              (\ (eta1 :: [a]) ->
+                               letrec {
+                                 go1 :: [a] -> Data.Monoid.All {- Arity: 1, Strictness: <S,1*U> -}
+                                 = \ (ds :: [a]) ->
+                                   case ds of wild1 {
+                                     [] -> GHC.Types.True `cast` (Sym (Data.Monoid.N:All[0]))
+                                     : y ys
+                                     -> case f y of wild2 {
+                                          GHC.Types.False
+                                          -> GHC.Types.False `cast` (Sym (Data.Monoid.N:All[0]))
+                                          GHC.Types.True -> go1 ys } }
+                               } in
+                               go1 eta1)
+                                `cast`
+                              (<[a]>_R ->_R Data.Monoid.N:All[0])
+                              xs }))) -}
+728924b6d1e54ccdea218be4c0e37878
+  filterLinesVer ::
+    (a -> GHC.Types.Bool) -> Matrix.Matrix a -> Matrix.Matrix a
+  {- Arity: 2, Strictness: <L,C(U)><L,1*U>m2, Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a (w :: a -> GHC.Types.Bool) (w1 :: Matrix.Matrix a) ->
+                 case Matrix.$wfilterLinesVer @ a w w1 of ww { Unit# ww1 ->
+                 Matrix.Matrix @ a ww1 }) -}
+7e72a381fe66c589755119553dfed173
   findAMostQuadraticEdgeSize :: [a] -> (Matrix.Width, Matrix.Height)
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: InlineRule (1, True, False)
@@ -462,7 +537,7 @@ b4c0f37cea9c380bfa2a994008051875
                  case Matrix.findEdgeSizes @ a xs of wild {
                    [] -> GHC.List.badHead @ (Matrix.Width, Matrix.Height)
                    : x ds1 -> x }) -}
-d0fc4b6921f8799572273fee7d3155ec
+b8991cce54422045ea545e6340de599d
   findEdgeSizes :: [a] -> [(Matrix.Width, Matrix.Height)]
   {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>,
      Unfolding: (\ @ a (xs :: [a]) ->
@@ -483,7 +558,7 @@ d0fc4b6921f8799572273fee7d3155ec
                             (GHC.Prim.># x1 ww2) of wild {
                        GHC.Types.False
                        -> let {
-                            lvl30 :: [GHC.Types.Int] = GHC.Enum.eftInt 1# ww2
+                            lvl29 :: [GHC.Types.Int] = GHC.Enum.eftInt 1# ww2
                           } in
                           letrec {
                             go1 :: GHC.Prim.Int# -> [(Matrix.Width, Matrix.Height)]
@@ -498,7 +573,7 @@ d0fc4b6921f8799572273fee7d3155ec
                                     GHC.Types.True -> GHC.Types.[] @ (Matrix.Width, Matrix.Height) }
                               } in
                               let {
-                                lvl31 :: GHC.Types.Int = GHC.Types.I# x2
+                                lvl30 :: GHC.Types.Int = GHC.Types.I# x2
                               } in
                               letrec {
                                 go2 :: [GHC.Types.Int] -> [(Matrix.Width, Matrix.Height)]
@@ -515,10 +590,10 @@ d0fc4b6921f8799572273fee7d3155ec
                                          GHC.Types.True
                                          -> GHC.Types.:
                                               @ (Matrix.Width, Matrix.Height)
-                                              (lvl31, wild2)
+                                              (lvl30, wild2)
                                               (go2 ys) } } }
                               } in
-                              go2 lvl30
+                              go2 lvl29
                           } in
                           go1 x1
                        GHC.Types.True -> GHC.Types.[] @ (Matrix.Width, Matrix.Height) }
@@ -528,17 +603,17 @@ d0fc4b6921f8799572273fee7d3155ec
                         (GHC.Prim.<## x (GHC.Prim.int2Double# n)) of wild1 {
                    GHC.Types.False -> $j n
                    GHC.Types.True -> $j (GHC.Prim.-# n 1#) } }) -}
-79a0f7c50a642cd6ecb333fad81d091b
+538cd10d354eb84c6068a8fb1a32ab05
   howManyElements :: Matrix.Matrix a -> GHC.Types.Int
   {- Arity: 1, Strictness: <S,1*U>m, Inline: INLINE[0],
      Unfolding: InlineRule (1, True, False)
                 (\ @ a (w :: Matrix.Matrix a) ->
                  case Matrix.$whowManyElements @ a w of ww { DEFAULT ->
                  GHC.Types.I# ww }) -}
-1cb26cbde5f1ab933769cb62acbf2e40
+2c30e51d3f5486a40bf4ded014d5d450
   howManyElements1 :: GHC.Types.Int
   {- Strictness: x -}
-3e8e62831be109a94f91694264dbd7d5
+6f3794f8d456a64c3211120db512d14c
   normalize :: Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 1, Strictness: <S,1*U>,
      Unfolding: (\ @ a (x :: Matrix.Matrix a) ->
@@ -550,7 +625,7 @@ d0fc4b6921f8799572273fee7d3155ec
                    (Matrix.normalize2 @ a xs)
                    (Matrix.normalize1 @ a xs)
                    xs) -}
-e61403dda9ded66d0a0bb20534724bd7
+1f69d04112fe9a973da02856f015080d
   normalize1 :: [a] -> Matrix.Height
   {- Arity: 1, Strictness: <S,1*U>m,
      Unfolding: InlineRule (1, True, False)
@@ -558,7 +633,7 @@ e61403dda9ded66d0a0bb20534724bd7
                  case Matrix.findEdgeSizes @ a x of wild {
                    [] -> case GHC.List.badHead ret_ty Matrix.Height of {}
                    : x1 ds1 -> case x1 of wild1 { (,) ds2 y -> y } }) -}
-87bd55427dc0949a0854c1f7ebf339fc
+b2e1733350af4d3492a7db5a5d5e47e6
   normalize2 :: [a] -> Matrix.Width
   {- Arity: 1, Strictness: <S,1*U>m,
      Unfolding: InlineRule (1, True, False)
@@ -566,7 +641,7 @@ e61403dda9ded66d0a0bb20534724bd7
                  case Matrix.findEdgeSizes @ a x of wild {
                    [] -> case GHC.List.badHead ret_ty Matrix.Width of {}
                    : x1 ds1 -> case x1 of wild1 { (,) x2 ds2 -> x2 } }) -}
-3137d2ec5bab52d54d590b1769aa3cdc
+b737533cbcd245975feced599b49bbf0
   toASquareMatrix :: [a] -> Matrix.Matrix a
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (1, True, False)
@@ -576,7 +651,7 @@ e61403dda9ded66d0a0bb20534724bd7
                    (Matrix.normalize2 @ a xs)
                    (Matrix.normalize1 @ a xs)
                    xs) -}
-264426f034c71467186d925e9221a65e
+a5c5b16bc9e1568ee375166210fe73a7
   toHeightMatrix :: Matrix.Height -> [a] -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,U(U)><S,U>,
      Unfolding: (\ @ a (height :: Matrix.Height) (xs :: [a]) ->
@@ -596,17 +671,17 @@ e61403dda9ded66d0a0bb20534724bd7
                       0# -> case GHC.Real.divZeroError ret_ty Matrix.Width of {} } } })
                    height
                    xs) -}
-cadbdce77fe5d157d9ddfbcb2114a0fa
+d8308d270ad863abb1738ee71877b00c
   toList :: Matrix.Matrix a -> [a]
   {- Arity: 1, Strictness: <S,1*U> -}
-5331d96dba39e56f2c367313bdf6da35
+59625c20e696b1814205a34fbd9b96d8
   toRectMatrix ::
     Matrix.Width -> Matrix.Height -> [a] -> Matrix.Matrix a
   {- Arity: 3, Strictness: <L,1*U(1*U)><L,U(U)><S,1*U> -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   transposeM :: Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 1, Strictness: <S,1*U> -}
-8150af84cce57457786c3d88ae21430f
+420f916b3b182de953b8bc6ef10b2eb1
   vector :: [a] -> Matrix.Axis -> Matrix.Matrix a
   {- Arity: 2, Strictness: <S,1*U><L,1*U(1*U)>,
      Unfolding: (\ @ a (ds :: [a]) (ds1 :: Matrix.Axis) ->
@@ -625,10 +700,10 @@ cd41d90daf9505c8859bde24bac4486e
                                      @ a
                                      wild of ww { (#,#) ww1 ww2 ->
                               GHC.Types.: @ [a] ww1 ww2 }) } } }) -}
-471e5b20f52712b8b09c8889172e7897
+d57ea2b065eb1ef18be969238d6467f1
   vector1 :: Matrix.Matrix a
   {- Strictness: x -}
-8b9488efde15928ed95225465cd151cf
+1eb8fb7b36d6af0ea8d892b9d4e7d4b8
   zipWithLines :: (a -> a -> a) -> Matrix.Matrix a -> Matrix.Matrix a
   {- Arity: 2, Strictness: <L,C(C1(U))><S,1*U>,
      Unfolding: (\ @ a (f :: a -> a -> a) (ds :: Matrix.Matrix a) ->
@@ -650,10 +725,10 @@ cd41d90daf9505c8859bde24bac4486e
                              -> Matrix.Matrix
                                   @ a
                                   (GHC.Types.: @ [a] wild2 (GHC.Types.[] @ [a])) } } }) -}
-e692ca4a9195a6887b2169e27554e6db
+295505a7765b65ad97ddb8eba944b2c9
   zipWithLines1 :: Matrix.Matrix a
   {- Strictness: x -}
-cd41d90daf9505c8859bde24bac4486e
+da4988ece597c0e5952893b053b5093c
   zipWithM ::
     (a -> b -> c)
     -> Matrix.Matrix a -> Matrix.Matrix b -> Matrix.Matrix c

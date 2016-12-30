@@ -1,10 +1,8 @@
 module DataBuilder
-  (
-  getNumber
+  ( getData
+  , filterDataContainer
   )where
 
-    import System.Process
-    import System.Exit
 
     import Data.Char
     import Data.List.Split
@@ -16,9 +14,9 @@ module DataBuilder
     type Header = String
     type Separator = String
 
-    newtype DataContainer = DataContainer ([Header], Matrix (Maybe Float))
+    newtype DataContainer = DataContainer ([Header], Matrix String)
 
-    newtype NumContainer = NumContainer ([Header], Matrix (Float))
+    newtype NumContainer = NumContainer ([Header], Matrix Float)
 
 
     instance Show DataContainer where
@@ -29,27 +27,31 @@ module DataBuilder
       show (NumContainer (xs, m)) = show xs ++ "\n" ++ show m
 
 
-    getDataContainer :: [String] -> Separator -> DataContainer
-    getDataContainer contentInLines sep = DataContainer (splitOn sep . head $ contentInLines, transposeM $ Matrix inside)
+    getDataContainer :: Separator -> [String] -> DataContainer
+    getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ Matrix inside)  --zmiana
                                 where
-                                  inside = map (\s -> map getNumber. splitOn sep $ s) . tail $ contentInLines
+                                  inside = map (\s -> splitOn sep $ s) . tail $ contentInLines
 
     filterDataContainer :: [Int] -> DataContainer -> NumContainer
     filterDataContainer columnsToDelete (DataContainer (s, m)) = NumContainer ( deleteElements columnsToDelete s,
                                                   fmap (\(Just e) -> e) .
                                                   filterLinesHor (\s -> if s == Nothing then False else True) .
+                                                  fmap getNumber .
                                                   deleteColumns columnsToDelete $ m)
 
 
-    -- getData :: Filepath -> IO (Matrix Float)
-    -- getData path = do
-    --   handle <- openFile path ReadMode
-    --   contents <- hGetContents handle
-    --   return $  . snd . getDataContainer .  lines $ contents
+    getData :: Filepath -> Separator -> IO (DataContainer)
+    getData path sep = do
+      handle <- openFile path ReadMode
+      contents <- hGetContents handle
+      return  (getDataContainer sep . lines $ contents)
 
 
 
     --PRIVATE FUNCTIONS
+
+    filterHeader :: Header -> Header
+    filterHeader s = filter (\ch -> (ch /= '\"') && (ch /= '\'')) s
 
     deleteElements :: [Int] -> [a] -> [a]
     deleteElements [] l = l

@@ -14,6 +14,13 @@
   (major1) == 4 && (major2) <  9 || \
   (major1) == 4 && (major2) == 9 && (minor) <= 0)
 
+/* package split-0.2.3.1 */
+#define VERSION_split "0.2.3.1"
+#define MIN_VERSION_split(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  2 || \
+  (major1) == 0 && (major2) == 2 && (minor) <= 3)
+
 /* tool gcc-4.2.1 */
 #define TOOL_VERSION_gcc "4.2.1"
 #define MIN_TOOL_VERSION_gcc(major1,major2,minor) (\
@@ -63,7 +70,7 @@
   (major1) == 0 && (major2) <  28 || \
   (major1) == 0 && (major2) == 28 && (minor) <= 0)
 
-#define CURRENT_COMPONENT_ID "Regression-0.1.0.0-5KiuTBgyrDsucRw8WHsu1"
+#define CURRENT_COMPONENT_ID "Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"
 
-#define CURRENT_PACKAGE_KEY "Regression-0.1.0.0-5KiuTBgyrDsucRw8WHsu1"
+#define CURRENT_PACKAGE_KEY "Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"
 
