@@ -27,7 +27,10 @@ module Matrix
   , filterLinesHor
   , filterLinesVer
   , deleteColumns
+  , scaleLines
   ) where
+
+    import Data.List
 
     type Axis = Int   --  0 - pion, 1 - ¬poziom
     type Width = Int
@@ -66,7 +69,6 @@ module Matrix
     toASquareMatrix :: [a] -> Matrix a
     toRectMatrix :: Width -> Height -> [a] -> Matrix a
     toHeightMatrix :: Height -> [a] -> Matrix a
-    -- toPairs :: [a] -> a -> Matrix a
     toList :: Matrix a -> [a]
     normalize :: Matrix a -> Matrix a
     zipWithLines :: (a -> a -> a) -> Matrix a -> Matrix a
@@ -139,7 +141,20 @@ module Matrix
     deleteColumns _ (Matrix [[]]) = EmptyM
     deleteColumns (x:xs) m = deleteColumns (decreaseAll xs) (deleteColumn x m)
 
+    scaleLines :: (Num a, Fractional a, Real a) => Matrix a -> Matrix a
+    scaleLines (Matrix [x]) = (Matrix [map (\e -> (e - (avg x)/(range x))) x])
+    scaleLines (Matrix (x:xs)) = unJust ((Matrix ([map (\e -> ((e - (avg x))/(range x))) x])) `conver` (scaleLines (Matrix xs)))
+          where
+            unJust = \(Just a) -> a
+
     --PRIVATE FUNCTIONS
+
+    avg :: (Num a, Real a, Fractional a) => [a] -> a
+    avg xs = realToFrac (sum xs) / genericLength xs
+
+    range :: (Num a, Ord a) => [a] -> a
+    range xs = maximum xs - minimum xs
+
 
     decreaseAll :: [Int] -> [Int]
     decreaseAll [] = []

@@ -1,6 +1,11 @@
+{-
+This is a module for reading and parsing *.csv files.
+-}
+
 module DataBuilder
   ( getData
   , filterDataContainer
+  , NumContainer(..)
   )where
 
 
@@ -28,7 +33,7 @@ module DataBuilder
 
 
     getDataContainer :: Separator -> [String] -> DataContainer
-    getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ Matrix inside)  --zmiana
+    getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ Matrix inside)
                                 where
                                   inside = map (\s -> splitOn sep $ s) . tail $ contentInLines
 
