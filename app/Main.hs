@@ -9,6 +9,7 @@ main :: IO ()
 main = do
     datacon <- (getData "examples/occupancy.csv" ",")
     numcon <- (return $ (filterDataContainer [1,2] datacon))
-    newfeat <- return $ createNewFeatures numcon
-    scaled <- return $ scale newfeat
-    print scaled
+    xycon <- return $ getXYContainer 6 numcon
+    -- newfeat <- return $ createNewFeatures numcon
+    -- scaled <- return $ scale newfeat
+    print xycon

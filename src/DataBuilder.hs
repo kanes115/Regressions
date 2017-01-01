@@ -6,6 +6,7 @@ module DataBuilder
   ( getData
   , filterDataContainer
   , NumContainer(..)
+  , Header
   )where
 
 

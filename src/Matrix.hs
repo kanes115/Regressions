@@ -28,6 +28,7 @@ module Matrix
   , filterLinesVer
   , deleteColumns
   , scaleLines
+  , getColumn
   ) where
 
     import Data.List
@@ -154,6 +155,14 @@ module Matrix
     scaleLines (Matrix (x:xs)) = unJust ((Matrix ([map (\e -> ((e - (avg x))/(range x))) x])) `conver` (scaleLines (Matrix xs)))
           where
             unJust = \(Just a) -> a
+
+
+    getColumn :: Int -> Matrix a -> [a]
+    getColumn n (Matrix xs) = loop n xs
+      where
+        loop _ [] = []
+        loop 1 (y:ys) = y
+        loop n (y:ys) = (loop (n-1) ys)
 
     --PRIVATE FUNCTIONS
 
