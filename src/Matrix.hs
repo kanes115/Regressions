@@ -29,6 +29,8 @@ module Matrix
   , deleteColumns
   , scaleLines
   , getColumn
+  , unpackM
+  , packM
   ) where
 
     import Data.List
@@ -157,8 +159,8 @@ module Matrix
             unJust = \(Just a) -> a
 
 
-    getColumn :: Int -> Matrix a -> [a]
-    getColumn n (Matrix xs) = loop n xs
+    getColumn :: Int -> Matrix a -> Matrix a
+    getColumn n (Matrix xs) = packM $ [loop n xs]
       where
         loop _ [] = []
         loop 1 (y:ys) = y

@@ -22,7 +22,7 @@ module DataBuilder
 
     newtype DataContainer = DataContainer ([Header], Matrix String)
 
-    newtype NumContainer = NumContainer ([Header], Matrix Float)
+    newtype NumContainer = NumContainer ([Header], Matrix Double)
 
 
     instance Show DataContainer where
@@ -78,7 +78,7 @@ module DataBuilder
     decreaseAll (x:xs) = (x-1):(decreaseAll xs)
 
 
-    getNumber :: String -> Maybe Float
+    getNumber :: String -> Maybe Double
     getNumber s = case head s == '\"' || head s == '\'' of
       True -> Nothing
-      False -> Just $ (read s :: Float)
+      False -> Just $ (read s :: Double)
