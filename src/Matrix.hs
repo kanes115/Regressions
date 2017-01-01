@@ -49,14 +49,22 @@ module Matrix
 
     instance (Num a) => Num (Matrix a) where
       (+) = zipWithM (+)
-      (*) = zipWithM (*)
-      fromInteger = error ""
+      fromInteger x = toASquareMatrix [fromInteger x]
       abs = fmap abs
       signum =  fmap signum
       negate = fmap negate
+      (*) a b = transposeM (mulling (transposeM a) b)
+
 
     instance Eq a => Eq (Matrix a) where
       (==) a b = (all id) $ (map (all id)) $ unpackM $ (zipWithM (==)) a b
+
+
+    mulling :: Num a => Matrix a -> Matrix a -> Matrix a        -- multiplies two matrixes where first is already transposed
+    mulling (Matrix [x]) (Matrix ys) = (Matrix [map (scalarMulLines x) ys])
+    mulling (Matrix (x:xs)) (Matrix (ys)) = unJust ((Matrix [map (scalarMulLines x) ys]) `conver` (mulling (Matrix xs) (Matrix ys)))
+                              where
+                                unJust = \(Just a) -> a
 
 
     emptyM :: Matrix a
@@ -74,8 +82,8 @@ module Matrix
     zipWithLines :: (a -> a -> a) -> Matrix a -> Matrix a
     conver :: Matrix a -> Matrix a -> Maybe (Matrix a)
     conhor :: Matrix a -> Matrix a -> Maybe (Matrix a)
-    filterLinesHor :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in horizontal line fullfil predicate, leaves those lines that fullfil
-    filterLinesVer :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in vertical line fullfil predicate, leaves those lines that fullfil
+    filterLinesHor :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in horizontal line fulfill predicate, leaves those lines that fulfill
+    filterLinesVer :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in vertical line fulfill predicate, leaves those lines that fulfill
     deleteColumns :: [Int] -> Matrix a -> Matrix a            --deletes all the columns specified in the list given as argument
 
 
@@ -148,6 +156,15 @@ module Matrix
             unJust = \(Just a) -> a
 
     --PRIVATE FUNCTIONS
+
+    scalarMulLines :: Num a => [a] -> [a] -> a
+    scalarMulLines [] [] = error "empty lists"
+    scalarMulLines xs ys = case length xs == length ys of
+            False -> error "must have same sizes"
+            True -> loop xs ys
+              where
+                loop [] [] = 0
+                loop (a:as) (b:bs) = a*b + loop as bs
 
     avg :: (Num a, Real a, Fractional a) => [a] -> a
     avg xs = realToFrac (sum xs) / genericLength xs
