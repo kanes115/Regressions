@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2016-12-30 18:15:30.341842 UTC
+2017-01-02 12:05:47.144609 UTC
 
 interface main@main:Main 8001
-  interface hash: 1839b83ab33887bb30f72aa592cdbf40
-  ABI hash: d1504cc7694ac2ffdb8c116f777383f2
+  interface hash: 2451125cbf67ed70bc23e00349fa15e4
+  ABI hash: 179bd96f45974924cc12125c85262ad7
   export-list hash: 05656ebaaaa6ed17dad1f17917fbae09
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 75a00b3102c2cd1ea6df7ca4368540f8
@@ -23,9 +23,10 @@ family instance modules: base-4.9.0.0:Control.Applicative
                          base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
                          base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
                          base-4.9.0.0:GHC.TypeLits
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:DataBuilder fd48260752fd3c4e129c8b23a807da88
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:DataBuilder 11623f2f3cf316e65c4a82787b1869e3
 import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Lib 7571d3af02cd59d821c460a13af6ce22
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Matrix 7769eaa6888511df16e6097884d7f7f7
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Matrix 44095d0348395386e76f8b5c43dd9d01
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Regressions e50c1a87a58a80908e117405f2b94b6c
 import  -/  base-4.9.0.0:GHC.Base 8ed3be81c0707b322f975a84ae1bb816
 import  -/  base-4.9.0.0:Prelude b9bddb97799837fe67a8d00939a5b6c3
 import  -/  base-4.9.0.0:System.IO ad985d7a3fc986e9b9c610fb344d9106
@@ -42,41 +43,108 @@ d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "main"#) -}
-6fc979ed0b6a4e52653133d6dddec122
+f79e19d651eb280051426e34687a5708
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-66fc227fdcf1e105559c93396a040f89
+ced658fa8275369678c2647d47b8cf7e
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
                  case DataBuilder.getData1
-                        Main.main3
-                        Main.main2
+                        Main.main10
+                        Main.main9
                         s of ds1 { (#,#) ipv ipv1 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
-                   (DataBuilder.$fShowDataContainer_$cshow ipv1)
+                   (case ipv1
+                           `cast`
+                         (DataBuilder.N:DataContainer[0]) of ww { (,) ww1 ww2 ->
+                    case DataBuilder.$wfilterDataContainer
+                           Main.main5
+                           ww1
+                           ww2 of ww3 { (#,#) ww4 ww5 ->
+                    case Regressions.$wgetXYContainer
+                           Main.main4
+                           ww4
+                           ww5 of ww7 { Unit# ww8 ->
+                    case ww8 of ww9 { (,,) ww10 ww11 ww12 ->
+                    case Regressions.$wcreateNewFeatures
+                           ww10
+                           ww11
+                           ww12 of ww6 { Unit# ww13 ->
+                    case ww13 of ww14 { (,,) ww15 ww16 ww17 ->
+                    case Matrix.transposeM
+                           @ GHC.Types.Double
+                           (Matrix.$wscaleLines
+                              @ GHC.Types.Double
+                              GHC.Float.$fFractionalDouble
+                              GHC.Float.$fRealDouble
+                              ww16) of wild {
+                      Matrix.EmptyM
+                      -> case Matrix.getColumn2 ret_ty GHC.Base.String of {}
+                      Matrix.Matrix xs1
+                      -> case Regressions.evalHypothesis
+                                (Matrix.Matrix
+                                   @ GHC.Types.Double
+                                   (GHC.Types.:
+                                      @ [GHC.Types.Double]
+                                      (Matrix.getColumn1 @ GHC.Types.Double Main.main3 xs1)
+                                      (GHC.Types.[] @ [GHC.Types.Double])))
+                                (Regressions.$wthetaInit
+                                   ww15
+                                   Main.main2) of ww18 { GHC.Types.D# ww19 ->
+                         GHC.Float.$w$sshowSignedFloat
+                           GHC.Float.$fShowDouble_$sshowFloat
+                           GHC.Show.shows22
+                           ww19
+                           (GHC.Types.[] @ GHC.Types.Char) } } } } } } } })
                    GHC.Types.True
                    ipv }) -}
-b6cf0d07fade5a064a987f043ee39fa2
-  main2 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# ","#) -}
-e8694123d311a7e159346228f0425261
-  main3 :: [GHC.Types.Char]
+8bfef51dca421185a315dbcffad24125
+  main10 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "examples/occupancy.csv"#) -}
-4324f4efdc283054a93d156548620ffa
-  main4 ::
+caa6ee9d139c5bd00becd710c087eabd
+  main11 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+9d623fddfa28e6fbfcc735867cd0e21e
+  main2 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 0.5##) -}
+4ff2b4a9d2aaed437ecfc0c39769b821
+  main3 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 54#) -}
+4e3fffc35bc1ff8dca7e6719a7593137
+  main4 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 6#) -}
+c3f1739d8548f2c34649b5e62a32f7f1
+  main5 :: [GHC.Types.Int]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.: @ GHC.Types.Int Main.main8 Main.main6) -}
+e561cf908af73c17e16b4718c98a1f24
+  main6 :: [GHC.Types.Int]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Int
+                   Main.main7
+                   (GHC.Types.[] @ GHC.Types.Int)) -}
+81c7b73e454c64aa8ea5ee552f6af03d
+  main7 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 2#) -}
+f0a498477f514b35fd2231779b894484
+  main8 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 1#) -}
+3dffb79ab4df27e8bdd728c2b3b34e23
+  main9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# ","#) -}
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:

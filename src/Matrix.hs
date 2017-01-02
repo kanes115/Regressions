@@ -18,7 +18,6 @@ module Matrix
   , findAMostQuadraticEdgeSize
   , toASquareMatrix
   , toHeightMatrix
-  -- , toPairs
   , toList
   , normalize
   , zipWithLines
@@ -232,10 +231,3 @@ module Matrix
     lowerFstTriple (x,y,z) (a,b,c) = case x < a of
                   True -> (x,y,z)
                   False -> (a,b,c)
-
-
-    -- findMostQuadraticEdgeSize :: [a] -> (Width, Height)
-    -- findMostQuadraticEdgeSize xs = (\(x,y,z) -> (y,z)) . foldr lowerFstTriple (length xs+1,0,0) . map (\(a, b) -> (abs(a-b), a, b)) . findEdgeSizes $ xs
-    --
-    -- toSquareMatrix :: [a] -> Matrix a
-    -- toSquareMatrix xs = toRectMatrix xs (fst . findMostQuadraticEdgeSize $ xs) (snd . findMostQuadraticEdgeSize $ xs)
