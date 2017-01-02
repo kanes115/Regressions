@@ -12,5 +12,5 @@ main = do
     xycon <- return $ getXYContainer 6 numcon
     newfeat <- return $ createNewFeatures xycon
     scaled <- return $ scale newfeat
-    pp <- return $ evalHypothesis (getTrainingSet 54 . getX $ scaled) (thetaInit scaled 0.5)
-    print pp
+    freeterm <- return $ addFreeTerm scaled
+    print (gradientDescent freeterm 0.8 10 1)

@@ -30,6 +30,8 @@ module Matrix
   , getColumn
   , unpackM
   , packM
+  , getElementByInd
+  , getSize
   ) where
 
     import Data.List
@@ -158,19 +160,32 @@ module Matrix
             unJust = \(Just a) -> a
 
 
-    getColumn :: Int -> Matrix a -> Matrix a
+    getColumn :: Int -> Matrix a -> Matrix a            --indexing from 1
     getColumn n (Matrix xs) = packM $ [loop n xs]
       where
         loop _ [] = []
         loop 1 (y:ys) = y
         loop n (y:ys) = (loop (n-1) ys)
 
+    getElementByInd :: Width -> Height -> Matrix a -> a   --indexing from 1
+    getElementByInd w h (Matrix xs) = case w > (length xs) || h > (length . head $ xs) of
+      True -> error $ "Inex out of bounds. For w: " ++ show w ++ " and h: " ++ show h ++ " in matrix of sizes: " ++ show (length xs) ++ " x " ++ show (length . head $ xs)
+      False -> loop h (loop w xs)
+      where
+        loop 1 [] = error "Index out of bounds. \n for 1"
+        loop 1 (x:xs) = x
+        loop n (x:xs) = loop (n-1) xs
+        loop n [] = error ("Index out of bounds. for "++ show n)
+
+    getSize :: Matrix a -> (Width, Height)
+    getSize (Matrix (x:xs)) = (length (x:xs), length x)
+
     --PRIVATE FUNCTIONS
 
     scalarMulLines :: Num a => [a] -> [a] -> a
     scalarMulLines [] [] = error "empty lists"
     scalarMulLines xs ys = case length xs == length ys of
-            False -> error "must have same sizes"
+            False -> error ("ScalarMulLines: Lists must have same sizes but have: " ++ (show .length $ xs) ++ " and " ++ (show . length $ ys))
             True -> loop xs ys
               where
                 loop [] [] = 0
