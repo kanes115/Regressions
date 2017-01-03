@@ -32,6 +32,8 @@ module Matrix
   , packM
   , getElementByInd
   , getSize
+  , getWidth
+  , getHeight
   ) where
 
     import Data.List
@@ -57,7 +59,9 @@ module Matrix
       abs = fmap abs
       signum =  fmap signum
       negate = fmap negate
-      (*) a b = transposeM (mulling (transposeM a) b)
+      (*) a b = case getHeight a == getWidth b of
+        True -> transposeM (mulling (transposeM a) b)
+        False -> error ("(*) : Height of the first matrix must be equal to width of the second but has: \n height 1st = " ++ (show . getHeight $ a) ++ ", width 2nd = " ++ (show . getWidth $ b))
 
 
     instance Eq a => Eq (Matrix a) where
@@ -88,7 +92,7 @@ module Matrix
     conhor :: Matrix a -> Matrix a -> Maybe (Matrix a)
     filterLinesHor :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in horizontal line fulfill predicate, leaves those lines that fulfill
     filterLinesVer :: (a -> Bool) -> Matrix a -> Matrix a     --checks if all of elements in vertical line fulfill predicate, leaves those lines that fulfill
-    deleteColumns :: [Int] -> Matrix a -> Matrix a            --deletes all the columns specified in the list given as argument
+    deleteColumns :: [Int] -> Matrix a -> Matrix a            --deletes all the columns specified in the list given as argument, indexing from 1
 
 
 
@@ -160,16 +164,19 @@ module Matrix
             unJust = \(Just a) -> a
 
 
-    getColumn :: Int -> Matrix a -> Matrix a            --indexing from 1
-    getColumn n (Matrix xs) = packM $ [loop n xs]
-      where
-        loop _ [] = []
-        loop 1 (y:ys) = y
-        loop n (y:ys) = (loop (n-1) ys)
+    --getters
+    getSize :: Matrix a -> (Width, Height)
+    getSize (Matrix (x:xs)) = (length (x:xs), length x)
+
+    getWidth :: Matrix a -> Width
+    getWidth (Matrix xs) = length xs
+
+    getHeight :: Matrix a -> Height
+    getHeight (Matrix (x:xs)) = length x
 
     getElementByInd :: Width -> Height -> Matrix a -> a   --indexing from 1
     getElementByInd w h (Matrix xs) = case w > (length xs) || h > (length . head $ xs) of
-      True -> error $ "Inex out of bounds. For w: " ++ show w ++ " and h: " ++ show h ++ " in matrix of sizes: " ++ show (length xs) ++ " x " ++ show (length . head $ xs)
+      True -> error $ "getElementById: Index out of bounds. For w: " ++ show w ++ " and h: " ++ show h ++ " in matrix of sizes: " ++ show (length xs) ++ " x " ++ show (length . head $ xs)
       False -> loop h (loop w xs)
       where
         loop 1 [] = error "Index out of bounds. \n for 1"
@@ -177,8 +184,13 @@ module Matrix
         loop n (x:xs) = loop (n-1) xs
         loop n [] = error ("Index out of bounds. for "++ show n)
 
-    getSize :: Matrix a -> (Width, Height)
-    getSize (Matrix (x:xs)) = (length (x:xs), length x)
+
+    getColumn :: Int -> Matrix a -> Matrix a            --indexing from 1
+    getColumn n (Matrix xs) = packM $ [loop n xs]
+          where
+            loop _ [] = []
+            loop 1 (y:ys) = y
+            loop n (y:ys) = (loop (n-1) ys)
 
     --PRIVATE FUNCTIONS
 
