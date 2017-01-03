@@ -23,6 +23,12 @@ module Regressions
     , gradientDescent
     , gradientDescentStep
     , getAllTrainingSetsOfOneFeature
+    , GradDescentInfo
+    , Alpha
+    , Epsilon
+    , Cost
+    , Theta
+    , NormalizeConst
     ) where
 
       import Matrix
@@ -38,6 +44,9 @@ module Regressions
       type NormalizeConst = Double
       type Alpha = Double                                                      -- the rate of speed of gradient descent
       type Epsilon = Double                                                    -- covergence tale, very small
+      type Cost = Double
+
+      type GradDescentInfo = (Theta, Cost)
 
       instance Show XYContainer where
         show (XYContainer (headers, x, y, am)) = "---------X--------- \n" ++ show headers ++ "\n" ++ show x ++ "\n" ++ "---------Y--------- \n" ++ show y
@@ -84,13 +93,13 @@ module Regressions
           vectorOfEvaluatedHypothesis = packM $ map forEachListEvalHypothesis unpackedmx
 
 
-      costNormalized :: XYContainer -> Theta -> NormalizeConst -> Double    --dla wersji createNewFeatures (czyli z twoerzeniem po jednym kwadracie i po jednym szescianie)
+      costNormalized :: XYContainer -> Theta -> NormalizeConst -> Double    --dla wersji I
       costNormalized (XYContainer (s, x, y, n)) theta normconst = (cost theta x y) + (normconst*(sumThets (n+1) (2*n) theta)) + (normconst*normconst*(sumThets (2*n+1) (3*n) theta))
         where
           sumThets x y thetaa
-            | y - x == 0 = getElementByInd 1 x thetaa
-            | y - x == 1 = (getElementByInd 1 x thetaa) + (getElementByInd 1 y thetaa)
-            | otherwise = (getElementByInd 1 x thetaa) + (sumThets (x + 1) y thetaa)
+            | y - x == 0 = abs (getElementByInd 1 x thetaa)
+            | y - x == 1 = (abs (getElementByInd 1 x thetaa)) + (abs (getElementByInd 1 y thetaa))
+            | otherwise = (abs (getElementByInd 1 x thetaa)) + (sumThets (x + 1) y thetaa)
 
 
 
@@ -104,7 +113,7 @@ module Regressions
                   vectorOfEvaluatedHypothesis = packM $ map forEachListEvalHypothesis unpackedmx
 
 
-      costNormalized'_toAdd :: Int -> AmountOfBasicFeatures -> NormalizeConst -> Double    --dla wersji createNewFeatures (czyli z twoerzeniem po jednym kwadracie i po jednym szescianie)
+      costNormalized'_toAdd :: Int -> AmountOfBasicFeatures -> NormalizeConst -> Double    --dla wersji I
       costNormalized'_toAdd varOfDer n normconst
         | varOfDer <=n && varOfDer > 0 = 0
         | varOfDer > n && varOfDer <= 2*n = normconst
@@ -122,16 +131,16 @@ module Regressions
           unJust = \(Just a) -> a
           costeval' varOfDer xyCon tht normc = (cost' varOfDer tht (getX xyCon) (getY xyCon)) + (costNormalized'_toAdd varOfDer (getAmountOfBasicFeatures xyCon) normc)
 
-      gradientDescent :: XYContainer -> Alpha -> NormalizeConst -> Epsilon -> IO (Theta)
-      gradientDescent xyc alpha normconst epsilon = loop epsilon (thetaInit xyc 0.7)
+      gradientDescent :: XYContainer -> Alpha -> NormalizeConst -> Epsilon -> Int -> IO (GradDescentInfo)
+      gradientDescent xyc alpha normconst epsilon maxiter = loop epsilon (thetaInit xyc 0.7) 0
         where
-          loop eps tht = do
+          loop eps tht i = do
             currentCost <- return $ costNormalized xyc tht normconst
-            if abs(currentCost) < eps
-              then return tht
+            if abs(currentCost) < eps || i == maxiter
+              then return (tht, currentCost)
               else
                 print ("Current cost = " ++ (show currentCost)) >> print tht >>
-                loop eps (gradientDescentStep xyc tht alpha normconst)
+                loop eps (gradientDescentStep xyc tht alpha normconst) (i+1)
 
       --getters
 
@@ -146,6 +155,12 @@ module Regressions
 
       getAmountOfBasicFeatures :: XYContainer -> AmountOfBasicFeatures
       getAmountOfBasicFeatures (XYContainer (_, _, _, am)) = am
+
+      getLastCost :: GradDescentInfo -> Cost
+      getLastCost (_, cost) = cost
+
+      getLastTheta :: GradDescentInfo -> Theta
+      getLastTheta (theta, _) = theta
 
 --PRIVATE FUNCTIONS
 
