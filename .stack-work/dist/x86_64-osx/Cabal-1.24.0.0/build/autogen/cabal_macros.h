@@ -7,6 +7,13 @@
   (major1) == 0 && (major2) <  1 || \
   (major1) == 0 && (major2) == 1 && (minor) <= 0)
 
+/* package HUnit-1.3.1.2 */
+#define VERSION_HUnit "1.3.1.2"
+#define MIN_VERSION_HUnit(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  3 || \
+  (major1) == 1 && (major2) == 3 && (minor) <= 1)
+
 /* package base-4.9.0.0 */
 #define VERSION_base "4.9.0.0"
 #define MIN_VERSION_base(major1,major2,minor) (\
@@ -70,7 +77,7 @@
   (major1) == 0 && (major2) <  28 || \
   (major1) == 0 && (major2) == 28 && (minor) <= 0)
 
-#define CURRENT_COMPONENT_ID "Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"
+#define CURRENT_COMPONENT_ID "Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5"
 
-#define CURRENT_PACKAGE_KEY "Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"
+#define CURRENT_PACKAGE_KEY "Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5"
 

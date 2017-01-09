@@ -1,40 +1,74 @@
+{-
+TODO:
+  - przy pdoawaniu training settu do evaluowania trzeba dodać coś, żeby automatycznie dodawały się nowe featury (kwadraty i sześciany)
+-}
 module AppRunner
-  (train
+  (
+     parseCSV
+   , prepareFile
+   , train
+   , guessY
+   , getPreparedFile
+   , getBaseXYContainer
+   , getFullyPreparedXYContainer
   ) where
 
     import Regressions
     import DataBuilder
+    import Matrix (vector)
 
-    type RunVersion = Int
     type Filepath = String
     type ColumnsToDelete = [Int]   --indexing from 1
-    type TestTrainRatio = Double
     type Cost = Double
-    type YColunIndex = Int
+    type YColumnIndex = Int
     type MaxIter = Int
 
-    type GradDescConsts = (Alpha, NormalizeConst, Epsilon, MaxIter)
+    type GradDescConsts = (Alpha, [(NormalizeConst, VariableInd)], Epsilon, MaxIter)
+    type DataAlteringInfo = (ColumnsToDelete, YColumnIndex)
 
-    newtype TrainInfo = TrainInfo (GradDescentInfo)
+    type File = (NumContainer, DataAlteringInfo)
+    type PreparedFile = (XYContainer, XYContainer)   -- |XYContainer before scaling and before adding free term, XYContainer after full preparing
+
+    newtype TrainInfo = TrainInfo (GradDescentInfo, PreparedFile)
 
     instance Show TrainInfo where
-      show (TrainInfo (tht, cost)) = ("Result theta: \n" ++ (show tht) ++ "\n" ++ "Cost: " ++ (show cost))
+      show (TrainInfo ((tht, cost), (unScaledUnNewfeat, fullyDone))) = ("|--------------------------------TRAIN INFO----------------------------------| \n"
+                                                                        ++ "Result theta: \n" ++ (show tht) ++ "\n"
+                                                                        ++ "Cost: " ++ (show cost) ++ "\n \n"
+                                                                        ++ "Unscaled data: \n" ++ show unScaledUnNewfeat ++ "\n"
+                                                                        ++ "Data used to training: \n" ++ show fullyDone)
+                                                                        ++ "\n |----------------------------------------------------------------------------| \n"
 
 
-    train :: Filepath -> ColumnsToDelete -> YColunIndex -> RunVersion -> TestTrainRatio -> GradDescConsts -> IO (TrainInfo)
-    train rawData columnsToD yColumnInd ver ratio consts
-      | ver == 1 = do
-        datacon <- (getData rawData ",")
-        numcon <- (return $ (filterDataContainer columnsToD datacon))
-        xycon <- return $ getXYContainer (yColumnInd - (length columnsToD)) numcon
-        newfeat <- return $ createNewFeatures xycon
-        scaled <- return $ scale newfeat   --scale przed newfeat
-        print scaled
-        freeterm <- return $ addFreeTerm newfeat
-        gradDescInf <- (gradientDescent freeterm (getAlpha consts) (getNormalizeConst consts) (getEpsilon consts) (getMaxIter consts))
-        return $ (TrainInfo gradDescInf)
-      | otherwise = error ("train: Unknown version.")
+    guessY :: TrainingSet -> TrainInfo -> Double
+    guessY trainingSet (TrainInfo (gradDescInfo, (xycUnscaled, xyc))) = evaluateInputData trainingSet (getLastTheta gradDescInfo) xycUnscaled xyc
 
+
+    train :: PreparedFile -> GradDescConsts -> IO (TrainInfo)
+    train (u, xyc) consts = do
+      gradDescInfo <- gradientDescent xyc (getAlpha consts) (getEpsilon consts) (getMaxIter consts) (getNormalizeConstList consts)
+      return $ (TrainInfo (gradDescInfo, (u, xyc)))
+
+
+
+    prepareFile :: File -> IO (PreparedFile)
+    prepareFile (numContainer, (columnsToD, yColumnInd)) = do
+        xycon <- return $ getXYContainer (yColumnInd - (length columnsToD)) numContainer
+        newfeat <- return $ createNewFeature 1 2 xycon
+        newfeat2 <- return $ createNewFeature 1 3 newfeat
+        scaled <- return $  scale newfeat2
+        freeterm <- return $ addFreeTerm scaled
+        return $ (newfeat, freeterm)
+
+
+    parseCSV :: Filepath -> DataAlteringInfo -> IO (File)
+    parseCSV rawData (columnsToD, yColumn) = do
+        datacontainer <- (getData rawData ",")
+        return $ (filterDataContainer columnsToD datacontainer, (columnsToD, yColumn - (length columnsToD)))
+
+
+    makeTrainingSet :: [Double] -> TrainingSet
+    makeTrainingSet = Regressions.makeTrainingSet
 
 
 
@@ -44,11 +78,23 @@ module AppRunner
     getAlpha :: GradDescConsts -> Alpha
     getAlpha (alp, _, _, _) = alp
 
-    getNormalizeConst :: GradDescConsts -> NormalizeConst
-    getNormalizeConst (_, norm, _, _) = norm
+    getNormalizeConstList :: GradDescConsts -> [(NormalizeConst, VariableInd)]
+    getNormalizeConstList (_, norm, _, _) = norm
 
     getEpsilon :: GradDescConsts -> Epsilon
     getEpsilon (_, _, eps, _) = eps
 
     getMaxIter :: GradDescConsts -> MaxIter
     getMaxIter (_, _, _, m) = m
+
+    getPreparedFile :: TrainInfo -> PreparedFile
+    getPreparedFile (TrainInfo (_, p)) = p
+
+    getBaseXYContainer :: PreparedFile -> XYContainer
+    getBaseXYContainer (a, b) = a
+
+    getFullyPreparedXYContainer :: PreparedFile -> XYContainer
+    getFullyPreparedXYContainer (a, b) = b
+
+
+    -- PRIVATE FUNCTIONS

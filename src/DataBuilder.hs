@@ -1,5 +1,5 @@
 {-
-This is a module for reading and parsing *.csv files.
+  This is a module for reading and parsing *.csv files.
 -}
 
 module DataBuilder
@@ -7,6 +7,7 @@ module DataBuilder
   , filterDataContainer
   , NumContainer(..)
   , Header
+  , DataContainer
   )where
 
 
@@ -16,15 +17,19 @@ module DataBuilder
 
     import Matrix hiding (decreaseAll)
 
+    -- * Types
+    -- | Simply String containing path to a file§
     type Filepath = String
     type Header = String
+    -- | String that seperates data, in csv it is: ","
     type Separator = String
 
+    -- | DataContainer is a container for headers of data and data itself
     newtype DataContainer = DataContainer ([Header], Matrix String)
-
+    -- | NumContainer stores the same as DataContainer except non-numerical values
     newtype NumContainer = NumContainer ([Header], Matrix Double)
 
-
+    -- * Instances
     instance Show DataContainer where
       show (DataContainer (xs, m)) = show xs ++ "\n" ++ show m
 
@@ -33,12 +38,16 @@ module DataBuilder
       show (NumContainer (xs, m)) = show xs ++ "\n" ++ show m
 
 
-    getDataContainer :: Separator -> [String] -> DataContainer
-    getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ Matrix inside)
-                                where
-                                  inside = map (\s -> splitOn sep $ s) . tail $ contentInLines
-
+    -- * FUNCTION INDEX
+    -- | Takes list of indexes of columns that are to be deleted, DataContainer with data and return NumContainer with only numeric values.
+    -- | If it cannot get a number out of a field it removes this one training set.
     filterDataContainer :: [Int] -> DataContainer -> NumContainer
+    -- | Takes a path to the file, seperator that seperates data and returns DataContainer
+    getData :: Filepath -> Separator -> IO (DataContainer)
+
+
+    -- BODIES
+
     filterDataContainer columnsToDelete (DataContainer (s, m)) = NumContainer ( deleteElements columnsToDelete s,
                                                   fmap (\(Just e) -> e) .
                                                   filterLinesHor (\s -> if s == Nothing then False else True) .
@@ -46,7 +55,7 @@ module DataBuilder
                                                   deleteColumns columnsToDelete $ m)
 
 
-    getData :: Filepath -> Separator -> IO (DataContainer)
+
     getData path sep = do
       handle <- openFile path ReadMode
       contents <- hGetContents handle
@@ -55,6 +64,11 @@ module DataBuilder
 
 
     --PRIVATE FUNCTIONS
+
+    getDataContainer :: Separator -> [String] -> DataContainer
+    getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ (packM inside))
+                                where
+                                  inside = map (\s -> splitOn sep $ s) . tail $ contentInLines
 
     filterHeader :: Header -> Header
     filterHeader s = filter (\ch -> (ch /= '\"') && (ch /= '\'')) s
@@ -79,6 +93,6 @@ module DataBuilder
 
 
     getNumber :: String -> Maybe Double
-    getNumber s = case head s == '\"' || head s == '\'' of
+    getNumber s = case head s == '\"' || head s == '\'' || (isLetter . head $ s) of
       True -> Nothing
       False -> Just $ (read s :: Double)

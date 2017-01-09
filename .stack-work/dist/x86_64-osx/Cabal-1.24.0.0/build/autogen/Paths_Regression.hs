@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/bin"
-libdir     = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/lib/x86_64-osx-ghc-8.0.1/Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX"
+libdir     = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/lib/x86_64-osx-ghc-8.0.1/Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5"
 datadir    = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/share/x86_64-osx-ghc-8.0.1/Regression-0.1.0.0"
 libexecdir = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/libexec"
 sysconfdir = "/Users/Kanes/Documents/Programowanie/Haskell/projekt/Regression/.stack-work/install/x86_64-osx/lts-7.14/8.0.1/etc"

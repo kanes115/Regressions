@@ -1,11 +1,11 @@
 
 ==================== FINAL INTERFACE ====================
-2017-01-03 11:16:12.6608 UTC
+2017-01-09 22:00:22.758343 UTC
 
 interface main@main:Main 8001
-  interface hash: 3729192312ff531a915846f764e47815
-  ABI hash: 72dd8eb8ca44824e265a311c7e5d7cac
-  export-list hash: 05656ebaaaa6ed17dad1f17917fbae09
+  interface hash: b0ad0a0038d8c7fba0d54bb01bae1829
+  ABI hash: 9a6f330b850785a61caa380b28f0fd3c
+  export-list hash: 45a3e649100a68e086fafc8ba490018a
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 75a00b3102c2cd1ea6df7ca4368540f8
   sig of: Nothing
@@ -14,7 +14,7 @@ interface main@main:Main 8001
 exports:
   Main.main
 module dependencies:
-package dependencies: Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX
+package dependencies: Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5
                       base-4.9.0.0* ghc-prim-0.5.0.0 integer-gmp-1.0.0.1
                       split-0.2.3.1@split-0.2.3.1-IJKK4pOCYGKud0jZImZke
 orphans: base-4.9.0.0:GHC.Base base-4.9.0.0:GHC.Float
@@ -23,12 +23,12 @@ family instance modules: base-4.9.0.0:Control.Applicative
                          base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
                          base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
                          base-4.9.0.0:GHC.TypeLits
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:DataBuilder 8fe0c469a6c1ae72961e0b6320befff0
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Lib 7571d3af02cd59d821c460a13af6ce22
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Matrix 2f18615bb81ce0b3a295f7f10fd630e9
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-BgfkxP9qOsG1ta2nZqj6mX:Regressions eb2e181c63d8c027033b7e88f6bf26e0
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:AppRunner 99a4e6718ad50f4d0ca61f19919f06e3
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:Matrix c42aa2be386c7d6004f690dbfc3233fd
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:Regressions 13e5df431fb01d3b2165b32d23e083f8
 import  -/  base-4.9.0.0:GHC.Base 8ed3be81c0707b322f975a84ae1bb816
 import  -/  base-4.9.0.0:Prelude b9bddb97799837fe67a8d00939a5b6c3
+import  -/  base-4.9.0.0:System.Environment ee0914a962f5508d0fd404c89ee4999b
 import  -/  base-4.9.0.0:System.IO ad985d7a3fc986e9b9c610fb344d9106
 import  -/  ghc-prim-0.5.0.0:GHC.Types 7378e41b7749213c8c88ceb6b0665d4c
 d6831ef04cb9301b090dfae6f7bb7ec7
@@ -43,102 +43,123 @@ d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "main"#) -}
-2d964612257adf6cb409b556e95d9abc
+2789f0b0c82353bb2f2a06197e8277ab
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-3fa7dbf881ee8a4b84f70cfeda7648a4
+07a3a3d7e5e80a5285f3e19e807c6071
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case System.Environment.getArgs1 s of ds1 { (#,#) ipv ipv1 ->
                  case DataBuilder.getData1
+                        Main.main9
+                        AppRunner.parseCSV2
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 case AppRunner.$wprepareFile
+                        (case ipv3
+                                `cast`
+                              (DataBuilder.N:DataContainer[0]) of ww { (,) ww1 ww2 ->
+                         case DataBuilder.$wfilterDataContainer
+                                (GHC.Types.[] @ GHC.Types.Int)
+                                ww1
+                                ww2 of ww3 { (#,#) ww4 ww5 ->
+                         (ww4, ww5) `cast` (Sym (DataBuilder.N:NumContainer[0])) } })
+                        (GHC.Types.[] @ GHC.Types.Int)
+                        Main.main8
+                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                 case ipv5 of ww { (,) ww1 ww2 ->
+                 case Regressions.gradientDescent1
+                        ww2
+                        Main.main7
+                        Main.main6
                         Main.main5
-                        Main.main4
-                        s of ds1 { (#,#) ipv ipv1 ->
-                 let {
-                   freeterm :: Regressions.XYContainer
-                   = case ipv1
-                            `cast`
-                          (DataBuilder.N:DataContainer[0]) of ww { (,) ww1 ww2 ->
-                     case DataBuilder.$wfilterDataContainer
-                            (GHC.Types.[] @ GHC.Types.Int)
-                            ww1
-                            ww2 of ww3 { (#,#) ww4 ww5 ->
-                     case Regressions.$wgetXYContainer
-                            Main.main3
-                            ww4
-                            ww5 of ww7 { Unit# ww8 ->
-                     case ww8 of ww9 { (,,,) ww10 ww11 ww12 ww6 ->
-                     case Regressions.$wcreateNewFeatures
-                            ww10
-                            ww11
-                            ww12
-                            ww6 of ww13 { Unit# ww14 ->
-                     case ww14 of ww15 { (,,,) ww16 ww17 ww18 ww19 ->
-                     case Regressions.$waddFreeTerm
-                            ww16
-                            (Matrix.$wscaleLines
-                               @ GHC.Types.Double
-                               GHC.Float.$fFractionalDouble
-                               GHC.Float.$fRealDouble
-                               ww17)
-                            (Matrix.$wscaleLines
-                               @ GHC.Types.Double
-                               GHC.Float.$fFractionalDouble
-                               GHC.Float.$fRealDouble
-                               ww18)
-                            ww19 of ww20 { Unit# ww21 ->
-                     Regressions.XYContainer ww21 } } } } } } }
-                 } in
+                        (GHC.Types.[]
+                           @ (Regressions.NormalizeConst, Regressions.VariableInd))
+                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
                  case GHC.IO.Handle.Text.hPutStr2
                         GHC.IO.Handle.FD.stdout
-                        (Regressions.$fShowXYContainer_$cshow freeterm)
+                        (case ipv7 of ww3 { (,) ww4 ww5 ->
+                         AppRunner.$w$cshow ww4 ww5 ww1 ww2 })
                         GHC.Types.True
-                        ipv of ds2 { (#,#) ipv2 ipv3 ->
-                 case freeterm of ww { Regressions.XYContainer ww1 ->
-                 case ww1 of ww2 { (,,,) ww3 ww4 ww5 ww6 ->
-                 case ww6 of ww7 { GHC.Types.I# ww8 ->
-                 case Regressions.$wgradientDescent
-                        ww3
-                        ww4
-                        ww5
-                        ww8
-                        Main.main2
-                        1.0##
-                        0.1##
-                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                        ipv6 of ds5 { (#,#) ipv8 ipv9 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        Main.main4
+                        GHC.Types.True
+                        ipv8 of ds6 { (#,#) ipv10 ipv11 ->
                  GHC.IO.Handle.Text.hPutStr2
                    GHC.IO.Handle.FD.stdout
-                   (Matrix.$fShowMatrix_$cshow
-                      @ GHC.Types.Double
-                      GHC.Float.$fShowDouble
-                      ipv5)
+                   (case ipv7 of ww5 { (,) ww6 ww7 ->
+                    case ww6 of ww8 { Matrix.Matrix ww9 ->
+                    case ww1 of ww13 { Regressions.XYContainer ww14 ->
+                    case ww14 of ww15 { (,,,,,,) ww16 ww17 ww18 ww19 ww20 ww21 ww22 ->
+                    case ww17 of ww23 { Matrix.Matrix ww24 ->
+                    case Matrix.$wmakeListOfOneElementLists
+                           @ GHC.Types.Double
+                           Main.main2 of ww4 { (#,#) ww11 ww12 ->
+                    case Regressions.$wevaluateInputData
+                           (GHC.Types.: @ [GHC.Types.Double] ww11 ww12)
+                           ww9
+                           ww24
+                           ww21 of ww28 { GHC.Types.D# ww29 ->
+                    GHC.Float.$w$sshowSignedFloat
+                      GHC.Float.$fShowDouble_$sshowFloat
+                      GHC.Show.shows22
+                      ww29
+                      (GHC.Types.[] @ GHC.Types.Char) } } } } } } })
                    GHC.Types.True
-                   ipv4 } } } } } }) -}
-bab7ac6bba4ef3415b1cde65416ce6bd
-  main2 :: GHC.Types.Double
-  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-3##) -}
-5aff556a9b225ae8c261a83d4430ec44
-  main3 :: GHC.Types.Int
-  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 2#) -}
-019c8f12857cd8fa2ca2828f7570d119
-  main4 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString# ","#) -}
-d5c96f1cfc696196228aeb3c1b233316
-  main5 :: [GHC.Types.Char]
-  {- Unfolding: (GHC.CString.unpackCString#
-                   "examples/exampledata.csv"#) -}
-c78f75571c3b2d463f3c8f9dc87694f9
-  main6 ::
+                   ipv10 } } } } } } }) -}
+2afa62c01435c8981315df2eca983984
+  main10 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+b627e236e45dace06d6cd2be8dcc7cb4
+  main2 :: [GHC.Types.Double]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Double
+                   Main.main3
+                   (GHC.Types.[] @ GHC.Types.Double)) -}
+a5612810e5c3e21610f3081f460ffe15
+  main3 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 5.0##) -}
+8b233397db35b9a6714c4fbdffa869ec
+  main4 :: GHC.Base.String
+  {- Unfolding: (case Matrix.$wmakeListOfOneElementLists
+                        @ GHC.Types.Double
+                        Main.main2 of ww { (#,#) ww1 ww2 ->
+                 Matrix.$w$cshow
+                   @ GHC.Types.Double
+                   GHC.Float.$fShowDouble
+                   (GHC.Types.: @ [GHC.Types.Double] ww1 ww2) }) -}
+5a30d7fb5da5663200b3d33deb598eba
+  main5 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 10000000#) -}
+f1d1f75680c68470d8d204f1749eff69
+  main6 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1000.0##) -}
+334a5c95158c92193ee4740c5640bb46
+  main7 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-5##) -}
+15f2eea41d22a291f5883182fe612bcf
+  main8 :: AppRunner.YColumnIndex
+  {- Unfolding: (case GHC.List.$wlenAcc
+                        @ GHC.Types.Int
+                        (GHC.Types.[] @ GHC.Types.Int)
+                        0# of ww2 { DEFAULT ->
+                 GHC.Types.I# (GHC.Prim.-# 2# ww2) }) -}
+e3654eac9df8d94c9a14980bdf2fad0c
+  main9 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   "examples/kwadraty.csv"#) -}
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:
