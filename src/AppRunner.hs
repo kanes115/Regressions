@@ -1,6 +1,6 @@
 {-
 TODO:
-  - przy pdoawaniu training settu do evaluowania trzeba dodać coś, żeby automatycznie dodawały się nowe featury (kwadraty i sześciany)
+  - przy pdoawaniu training setu do evaluowania trzeba dodać coś, żeby automatycznie dodawały się nowe featury (kwadraty i sześciany)
 -}
 module AppRunner
   (
@@ -55,9 +55,8 @@ module AppRunner
     prepareFile (numContainer, (columnsToD, yColumnInd)) = do
         xycon <- return $ getXYContainer (yColumnInd - (length columnsToD)) numContainer
         newfeat <- return $ createNewFeature 1 2 xycon
-        newfeat2 <- return $ createNewFeature 1 3 newfeat
-        scaled <- return $  scale newfeat2
-        freeterm <- return $ addFreeTerm scaled
+        scaled <- return $  scale newfeat
+        freeterm <- return $ scaled --addFreeTerm
         return $ (newfeat, freeterm)
 
 

@@ -160,7 +160,7 @@ module Regressions
 
 
 
-      gradientDescent xyc alpha epsilon maxiter ns = loop epsilon (thetaInit xyc 0.7) 0
+      gradientDescent xyc alpha epsilon maxiter ns = loop epsilon (thetaInit xyc 1) 0
         where
           loop eps tht i = do
               currentCost <- return $ costNormalized xyc tht ns
