@@ -33,9 +33,11 @@ module Regressions
 
       import Matrix
       import DataBuilder (NumContainer(..), Header)
+      import MaybeResult
 
       import System.IO
       import Data.List
+      import MaybeResult
 
       -- | Matrix of data, columns are features, rows training sets
       type X = Matrix Double
@@ -90,13 +92,13 @@ module Regressions
       -- | about amount of basic features and information about if free term column has been added to X matrix. Indexing from 1
       getXYContainer :: Int -> NumContainer -> XYContainer
       -- | Scales data in XYContainer. For each element: x' = (x - avg(column where x is)) / range_of_values(column where x is)
-      scale :: XYContainer -> XYContainer
+      scale :: XYContainer -> MaybeRes (XYContainer)
       -- | Adds a column of ones at the end of X.
-      addFreeTerm :: XYContainer -> XYContainer
+      addFreeTerm :: XYContainer -> MaybeRes (XYContainer)
       -- | Creates a TrainingSet out of a list
       makeTrainingSet :: [Double] -> TrainingSet
       -- | Creates new features to X by taking VariableInd-th feature and raise it to the power Power
-      createNewFeature :: VariableInd -> Power -> XYContainer -> XYContainer
+      createNewFeature :: VariableInd -> Power -> XYContainer -> MaybeRes (XYContainer)
       -- | Performs a gradient descent algorithm for data in XYContainer. Alpha is a learn speed rate, epsilon is the convergence
       -- | condition (gradient descent stops when the difference between current cost and next cost is lower than epsilon),
       -- | MaxIter is a maximum of iteration you allow gradient descent to go through, and a list of (NormalizeConst, VariableInd)
@@ -115,16 +117,15 @@ module Regressions
       getLastTheta :: GradDescentInfo -> Theta
 
 
-      --bodies:
 
 
       getXYContainer yColumnIndex (NumContainer (s, m)) = XYContainer (allBut_ yColumnIndex s, deleteColumns [yColumnIndex] m, packM [toList $ getColumn yColumnIndex m], (length s) - 1, Nothing, [], False)
 
 
       createNewFeature varInd power (XYContainer (s , mx, my, am, wf, newF, False)) =
-                                      XYContainer (
+                                    JustRes $  XYContainer (
                                                   s ++ [(takeElement varInd s) ++ " to power " ++ show power],
-                                                  unJust (mx `conver` (fmap (^ power) columnToAlter)),
+                                                  getResult (mx `conver` (fmap (^ power) columnToAlter)),
                                                   my,
                                                   am,
                                                   wf,
@@ -136,17 +137,17 @@ module Regressions
                                                     unJust = \(Just a) -> a
                                                     takeElement 1 (x:xs) = x
                                                     takeElement i (x:xs) = takeElement (i-1) xs
-      createNewFeature varInd power (XYContainer (s , mx, my, am, wf, newF, True)) = error "Can't add new features after scaling!"
+      createNewFeature varInd power (XYContainer (s , mx, my, am, wf, newF, True)) = Error "Can't add new features after scaling!"
 
 
 
-      scale (XYContainer (s, mx, my, am, Nothing, newF, False)) = XYContainer (s, scaleLines mx, scaleLines my, am, Nothing, newF, True)
-      scale (XYContainer (s, mx, my, am, _, newF, True)) = error "Can't scale more than one time."
-      scale (XYContainer (s, mx, my, am, _, newF, _)) = error "Can't scale after adding free term."
+      scale (XYContainer (s, mx, my, am, Nothing, newF, False)) = JustRes $ XYContainer (s, scaleLines mx, scaleLines my, am, Nothing, newF, True)
+      scale (XYContainer (s, mx, my, am, _, newF, True)) = Error "Can't scale more than one time."
+      scale (XYContainer (s, mx, my, am, _, newF, _)) = Error "Can't scale after adding free term."
 
 
-      addFreeTerm (XYContainer (s , mx, my, am, Nothing, newF, sc)) = XYContainer (s ++ ["Free term"],
-                                                                        unJust (mx `conver` vectorOfOnes),
+      addFreeTerm (XYContainer (s , mx, my, am, Nothing, newF, sc)) = JustRes $ XYContainer (s ++ ["Free term"],
+                                                                        getResult (mx `conver` vectorOfOnes),
                                                                         my,
                                                                         am,
                                                                         Just $ (length s) + 1,
@@ -155,8 +156,7 @@ module Regressions
                                                                         )
                                                   where
                                                     vectorOfOnes = vector (replicate (getHeight $ mx) 1) 0
-                                                    unJust = \(Just a) -> a
-      addFreeTerm (XYContainer (s , mx, my, am, _, _, _)) = error "Free term already has been added."
+      addFreeTerm (XYContainer (s , mx, my, am, _, _, _)) = Error "Free term already has been added."
 
 
 
@@ -174,32 +174,35 @@ module Regressions
 
 
 
---Functions to cope with evaluating test data
 
-    -- | Creates new features to the training set as specified in a list of info about new features. XYContainer is a base
-    -- | container - before scaling and adding free term to it
+
+      -- | Creates new features to the training set as specified in a list of info about new features. XYContainer is a base
+      -- | container - before scaling and adding free term to it
       createNewFeaturesFromListToTrainingSet :: [NewFeature] -> TrainingSet -> TrainingSet
-      createNewFeaturesFromListToTrainingSet nf trSet = unJust $ trSet `conver` (loop nf)
+      createNewFeaturesFromListToTrainingSet nf trSet = getResult $ trSet `conver` (loop nf)
           where
             loop [] = trSet
             loop [(power, varInd)] = (fmap (^ power) columnToAlter varInd)
-            loop ((power, varInd):nf) = unJust ( (fmap (^ power) columnToAlter varInd) `conver` (loop nf) )
+            loop ((power, varInd):nf) = getResult ( (fmap (^ power) columnToAlter varInd) `conver` (loop nf) )
             columnToAlter var = getColumn var trSet
 
 
 
       evaluateInputData inputData tht baseContainer fullyDone = case (getWidth withNewFeatures) == (getHeight tht) of
-          True -> getElementByInd (1, 1) $ (scaleTrainingSet baseContainer withNewFeatures) * tht
-          False -> getElementByInd (1, 1) $ (insertColumnAfter ((unJust . getFreeTermColumnInd $ fullyDone) - 1) 1 . scaleTrainingSet baseContainer $ withNewFeatures) * tht
+          True -> getResult $ getElementByInd (1, 1) $ (getResult $ scaleTrainingSet baseContainer withNewFeatures) * tht
+          False -> getResult $ getElementByInd (1, 1) $ (insertColumnAfter ((unJust . getFreeTermColumnInd $ fullyDone) - 1) 1 . getResult . scaleTrainingSet baseContainer $ withNewFeatures) * tht
           where
             withNewFeatures = createNewFeaturesFromListToTrainingSet (getNewFeatureList baseContainer) inputData
-            insertColumnAfter i val m = unJust (m `conver` (packM [[val]]))
+            insertColumnAfter i val m = getResult (m `conver` (packM [[val]]))
 
 
 
 
-      scaleTrainingSet ::  XYContainer -> TrainingSet -> TrainingSet
-      scaleTrainingSet baseContainer trainSet = zipWithM (+) (zipWithM (*) rangeMatrix trainSet) avgMatrix
+      scaleTrainingSet ::  XYContainer -> TrainingSet -> MaybeRes (TrainingSet)
+      scaleTrainingSet baseContainer trainSet
+        | isOK (zipWithM (*) rangeMatrix trainSet) && isOK (zipWithM (+) (getResult $ zipWithM (*) rangeMatrix trainSet) avgMatrix)
+                                      = zipWithM (+) (getResult $ zipWithM (*) rangeMatrix trainSet) avgMatrix
+        | otherwise = Error "Error while scaling training set."
         where
           avgMatrix = getAvgColumnsMatrix . getX $ (baseContainer)
           rangeMatrix = getRangeColumnsMatrix . getX $ (baseContainer)
@@ -245,8 +248,8 @@ module Regressions
       gradientDescentStep :: XYContainer -> Theta -> Alpha -> [(NormalizeConst, VariableInd)] -> Theta
       gradientDescentStep xyc theta alpha ns = loop (getWidth . getX $ xyc)
         where
-          loop 1 = packM ([[(getElementByInd (1, 1) theta) - (alpha * (costeval' 1 xyc theta ns))]])
-          loop i = unJust ((packM ([[(getElementByInd (1, i) theta) - (alpha * (costeval' i xyc theta ns))]])) `conhor` (loop (i-1)))
+          loop 1 = packM ([[(getResult $ getElementByInd (1, 1) theta) - (alpha * (costeval' 1 xyc theta ns))]])
+          loop i = getResult ((packM ([[(getResult $ getElementByInd (1, i) theta) - (alpha * (costeval' i xyc theta ns))]])) `conhor` (loop (i-1)))
           unJust = \(Just a) -> a
           costeval' varOfDer xyCon tht ns = (costNormalized' varOfDer tht xyCon ns)
 
@@ -255,7 +258,7 @@ module Regressions
       cost theta (XYContainer(_, mx, my, _, _, _, _)) = (addLinesAndGetDouble . fmap (^2) $ (vectorOfEvaluatedHypothesis) - (transposeM $ my)) / (2*(fromIntegral . length $ unpackedmx))
         where
           unpackedmx = unpackM . transposeM $ mx    --transposed list of lists of matrix X
-          addLinesAndGetDouble = getElementByInd (1, 1) . zipWithLines (+)
+          addLinesAndGetDouble = getResult . getElementByInd (1, 1) . zipWithLines (+)
           forEachListEvalHypothesis = (\xs -> [evalHypothesis (vector xs 1) theta])
           vectorOfEvaluatedHypothesis = packM $ map forEachListEvalHypothesis unpackedmx
 
@@ -265,7 +268,7 @@ module Regressions
             ((getElement $ ((vectorOfEvaluatedHypothesis) - (transposeM $ my))*(getAllTrainingSetsOfOneFeature varOfDer mx)) / (fromIntegral . length $ unpackedmx))
                 where
                   unpackedmx = unpackM . transposeM $ mx                                          --transposed list of lists of matrix X
-                  getElement = getElementByInd (1, 1)
+                  getElement = getResult . getElementByInd (1, 1)
                   forEachListEvalHypothesis = (\xs -> [evalHypothesis (vector xs 1) theta])
                   vectorOfEvaluatedHypothesis = packM $ map forEachListEvalHypothesis unpackedmx
 
@@ -277,7 +280,7 @@ module Regressions
           sumNorms [] = 0
           sumNorms [n] = evalNorms n
           sumNorms (n:ns) = evalNorms n + sumNorms ns
-          evalNorms (norm, var) = norm * (getElementByInd (1, var) theta)
+          evalNorms (norm, var) = norm * (getResult $ getElementByInd (1, var) theta)
 
 
       costNormalized' :: Int -> Theta -> XYContainer -> [(NormalizeConst, VariableInd)] -> Double
@@ -291,7 +294,7 @@ module Regressions
 
 
       evalHypothesis :: TrainingSet -> Theta -> Double
-      evalHypothesis x theta = getElementByInd (1, 1) (theta * x)
+      evalHypothesis x theta = getResult $ getElementByInd (1, 1) (theta * x)
 
       getTrainingSet :: Int -> X -> TrainingSet
       getTrainingSet = getRow

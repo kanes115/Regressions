@@ -36,9 +36,11 @@ module Matrix
   , getHeight
   , getAvgColumnsMatrix
   , getRangeColumnsMatrix
+  , isEmpty
   ) where
 
     import Data.List
+    import MaybeResult
 
     -- | Specifies the axis: 0 - vertical, 1  - horizontal
     type Axis = Int
@@ -62,7 +64,10 @@ module Matrix
       fmap f (Matrix (x:xs)) = packM $ (map f x):(unpackM (fmap f (packM xs)))
 
     instance (Num a) => Num (Matrix a) where
-      (+) = zipWithM (+)
+      (+) a b
+        | isOK (zipWithM (+) a b) = getResult $ zipWithM (+) a b
+        | otherwise = error ("Error while adding matrixes. \n" ++ (getError $ zipWithM (+) a b))
+
       fromInteger x = toASquareMatrix [fromInteger x]
       abs = fmap abs
       signum =  fmap signum
@@ -73,7 +78,9 @@ module Matrix
 
 
     instance Eq a => Eq (Matrix a) where
-      (==) a b = (all id) $ (map (all id)) $ unpackM $ (zipWithM (==)) a b
+      (==) a b
+        | getSize a == (getSize b) = (all id) $ (map (all id)) $ unpackM $ (getResult $ zipWithM (==) a b)
+        | otherwise = False
 
     -- * FUNCTIONS INDEX
     -- | Gives an empty matrix
@@ -85,7 +92,7 @@ module Matrix
     -- | Gives a vector
     vector :: [a] -> Axis -> Matrix a
     -- | Zips corresponding elements using function
-    zipWithM :: (a -> b -> c) -> Matrix a -> Matrix b -> Matrix c
+    zipWithM :: (a -> b -> c) -> Matrix a -> Matrix b -> MaybeRes (Matrix c)
     -- | Transposes matrix
     transposeM :: Matrix a -> Matrix a
     -- | Gives a number of elements in matrix
@@ -107,9 +114,9 @@ module Matrix
     -- | Zips columns using specified function.
     zipWithLines :: (a -> a -> a) -> Matrix a -> Matrix a
     -- | Concatenates matrixes in vertical axis. Possible infix notation
-    conver :: Matrix a -> Matrix a -> Maybe (Matrix a)
+    conver :: Matrix a -> Matrix a -> MaybeRes (Matrix a)
     -- | Concatenates matrixes in horizontal axis. Possible infix notation
-    conhor :: Matrix a -> Matrix a -> Maybe (Matrix a)
+    conhor :: Matrix a -> Matrix a -> MaybeRes (Matrix a)
     -- | Checks if all of elements in horizontal line fulfill predicate, leaves those lines that fulfill
     filterLinesHor :: (a -> Bool) -> Matrix a -> Matrix a
     -- | Checks if all of elements in vertical line fulfill predicate, leaves those lines that fulfill
@@ -120,6 +127,8 @@ module Matrix
     scaleLines :: (Num a, Fractional a, Real a) => Matrix a -> Matrix a
     -- | Gives a horizontal vector of tuples (avg of column, range of column)
     getAvgRangeAboutColumns :: (Num a, Fractional a, Real a) => Matrix a -> Matrix (a, a)
+    -- | Returns true if Matrix is Empty
+    isEmpty :: Matrix a -> Bool
 
     -- ** getters
     -- | Returns size of matrix as tuple (Width, Height)
@@ -129,7 +138,7 @@ module Matrix
     -- | Returns Height of matrix
     getHeight :: Matrix a -> Height
     -- | Returns element that is on index (Width, Height), indexing from 1
-    getElementByInd :: (Width, Height) -> Matrix a -> a
+    getElementByInd :: (Width, Height) -> Matrix a -> MaybeRes a
     -- | Returns n-th column as a vertical vector, indexing from 1
     getColumn :: Int -> Matrix a -> Matrix a
     -- | Returns n-th row as a horizontal vector, indexing from 1
@@ -142,6 +151,9 @@ module Matrix
 
     --BODIES
 
+    isEmpty (Matrix [[]]) = True
+    isEmpty _ = False
+
     emptyM = (Matrix [])
 
     vector [] _ = (Matrix [])
@@ -153,11 +165,11 @@ module Matrix
     transposeM (Matrix [x]) = Matrix $ makeListOfOneElementLists x
     transposeM (Matrix (x:xs)) = concatHorizM (Matrix (makeListOfOneElementLists x)) (transposeM (Matrix xs))
 
-    zipWithM _ (Matrix []) (Matrix []) = Matrix []
-    zipWithM _ (Matrix []) s = error ("Can't zip matrixes with different sizes!")
-    zipWithM _ s (Matrix []) = error ("Can't zip matrixes with different sizes!")
-    zipWithM f (Matrix [x]) (Matrix [y]) = (packM $ [zipWith f x y])
-    zipWithM f (Matrix (x:xs)) (Matrix (y:ys)) = (packM $ [zipWith f x y]) `concatVerticM` (zipWithM f (Matrix xs) (Matrix ys))
+    zipWithM _ (Matrix []) (Matrix []) = JustRes $ Matrix []
+    zipWithM _ (Matrix []) s = Error ("Can't zip matrixes with different sizes!")
+    zipWithM _ s (Matrix []) = Error ("Can't zip matrixes with different sizes!")
+    zipWithM f (Matrix [x]) (Matrix [y]) = JustRes (packM $ [zipWith f x y])
+    zipWithM f (Matrix (x:xs)) (Matrix (y:ys)) = JustRes ((packM $ [zipWith f x y]) `concatVerticM` (getResult $ zipWithM f (Matrix xs) (Matrix ys)))
 
     findEdgeSizes xs = [(a, b) | a <- [(floor . sqrt . fromIntegral $ len)..len], b <- [1..len], a * b == len]
         where len = length xs
@@ -183,13 +195,16 @@ module Matrix
 
     zipWithLines f (Matrix (x:xs)) = vector (foldr (zipWith f) x xs) 0
 
+    (Matrix []) `conver` (Matrix []) = JustRes (Matrix [])
+    (Matrix []) `conver` m = JustRes m
+    m `conver` (Matrix []) = JustRes m
     (Matrix (x:xs)) `conver` (Matrix (y:ys)) = case length x == length y of
-        True -> Just $ concatVerticM (Matrix (x:xs)) (Matrix (y:ys))
-        False -> Nothing
+        True -> JustRes $ concatVerticM (Matrix (x:xs)) (Matrix (y:ys))
+        False -> Error "Matrixes must have same vertical edge."
 
     (Matrix (xs)) `conhor` (Matrix (ys)) = case length xs == length ys of
-      True -> Just $ concatHorizM (Matrix xs) (Matrix ys)
-      False -> Nothing
+      True -> JustRes $ concatHorizM (Matrix xs) (Matrix ys)
+      False -> Error "Matrixes must have same horizontal edge."
 
 
     filterLinesHor f = transposeM . packM . filter (all f) . unpackM . transposeM
@@ -201,12 +216,12 @@ module Matrix
     deleteColumns (x:xs) m = deleteColumns (decreaseAll xs) (deleteColumn x m)
 
     scaleLines (Matrix [x]) = (Matrix [map (\e -> (e - (avg x)/(range x))) x])
-    scaleLines (Matrix (x:xs)) = unJust ((Matrix ([map (\e -> ((e - (avg x))/(range x))) x])) `conver` (scaleLines (Matrix xs)))
+    scaleLines (Matrix (x:xs)) = getResult ((Matrix ([map (\e -> ((e - (avg x))/(range x))) x])) `conver` (scaleLines (Matrix xs)))
 
 
     getAvgRangeAboutColumns (Matrix []) = (Matrix [])
     getAvgRangeAboutColumns (Matrix [x]) = (Matrix [[(avg x, range x)]])
-    getAvgRangeAboutColumns (Matrix (x:xs)) = unJust ((Matrix [[(avg x, range x)]]) `conver` (getAvgRangeAboutColumns (Matrix xs)))
+    getAvgRangeAboutColumns (Matrix (x:xs)) = getResult ((Matrix [[(avg x, range x)]]) `conver` (getAvgRangeAboutColumns (Matrix xs)))
 
 
     getAvgColumnsMatrix = fmap fst . getAvgRangeAboutColumns
@@ -215,6 +230,7 @@ module Matrix
 
     --getters
 
+    getSize (Matrix [[]]) = (0, 0)
     getSize (Matrix (x:xs)) = (length (x:xs), length x)
 
 
@@ -225,8 +241,8 @@ module Matrix
 
 
     getElementByInd (w, h) (Matrix xs) = case w > (length xs) || h > (length . head $ xs) of
-      True -> error $ "getElementById: Index out of bounds. For w: " ++ show w ++ " and h: " ++ show h ++ " in matrix of sizes: " ++ show (length xs) ++ " x " ++ show (length . head $ xs)
-      False -> loop h (loop w xs)
+      True -> Error $ "getElementById: Index out of bounds. For w: " ++ show w ++ " and h: " ++ show h ++ " in matrix of sizes: " ++ show (length xs) ++ " x " ++ show (length . head $ xs)
+      False -> JustRes $ loop h (loop w xs)
       where
         loop 1 [] = error "Index out of bounds. \n for 1"
         loop 1 (x:xs) = x
@@ -246,7 +262,7 @@ module Matrix
 
     mulling :: Num a => Matrix a -> Matrix a -> Matrix a        -- multiplies two matrixes where first is already transposed
     mulling (Matrix [x]) (Matrix ys) = (Matrix [map (scalarMulLines x) ys])
-    mulling (Matrix (x:xs)) (Matrix (ys)) = unJust ((Matrix [map (scalarMulLines x) ys]) `conver` (mulling (Matrix xs) (Matrix ys)))
+    mulling (Matrix (x:xs)) (Matrix (ys)) = getResult ((Matrix [map (scalarMulLines x) ys]) `conver` (mulling (Matrix xs) (Matrix ys)))
 
 
     scalarMulLines :: Num a => [a] -> [a] -> a
@@ -285,6 +301,7 @@ module Matrix
     addLine (x:xs) 1 (Matrix (y:ys)) = concatVerticM (Matrix [x:y]) (addLine xs 1 (Matrix ys))
 
     makeListOfOneElementLists :: [a] -> [[a]]
+    makeListOfOneElementLists [] = [[]]
     makeListOfOneElementLists [x] = [[x]]
     makeListOfOneElementLists (x:xs) = [[x]] ++ (makeListOfOneElementLists xs)
 

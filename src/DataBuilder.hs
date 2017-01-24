@@ -5,6 +5,8 @@
 module DataBuilder
   ( getData
   , filterDataContainer
+  , getMatrixFromDataContainer
+  , getMatrixFromNumContainer
   , NumContainer(..)
   , Header
   , DataContainer
@@ -14,6 +16,8 @@ module DataBuilder
     import Data.Char
     import Data.List.Split
     import System.IO
+    import Control.Exception
+    import Exceptions
 
     import Matrix hiding (decreaseAll)
 
@@ -47,7 +51,6 @@ module DataBuilder
 
 
     -- BODIES
-
     filterDataContainer columnsToDelete (DataContainer (s, m)) = NumContainer ( deleteElements columnsToDelete s,
                                                   fmap (\(Just e) -> e) .
                                                   filterLinesHor (\s -> if s == Nothing then False else True) .
@@ -56,14 +59,34 @@ module DataBuilder
 
 
 
-    getData path sep = do
+    getData path sep = (do
       handle <- openFile path ReadMode
       contents <- hGetContents handle
-      return  (getDataContainer sep . lines $ contents)
+      if isFileOK contents
+        then return  (getDataContainer sep . lines $ contents)
+        else throwE "\n The file is not a valid csv file.")
+      `catch` handler
 
 
+    handler :: IOError -> IO (DataContainer)
+    handler e = do
+      throwE (show e ++ "Error while getting data.")
+
+
+
+
+    getMatrixFromDataContainer :: DataContainer -> Matrix String
+    getMatrixFromDataContainer (DataContainer (_, m)) = m
+
+    getMatrixFromNumContainer :: NumContainer -> Matrix Double
+    getMatrixFromNumContainer (NumContainer (_, m)) = m
 
     --PRIVATE FUNCTIONS
+
+    isFileOK :: String -> Bool    -- here we can evaluate on errors that can appear
+    isFileOK s
+      | length s == 0 = False     -- when empty file
+      | otherwise = True
 
     getDataContainer :: Separator -> [String] -> DataContainer
     getDataContainer sep contentInLines = DataContainer (map filterHeader . splitOn sep . head $ contentInLines, transposeM $ (packM inside))
@@ -93,6 +116,6 @@ module DataBuilder
 
 
     getNumber :: String -> Maybe Double
-    getNumber s = case head s == '\"' || head s == '\'' || (isLetter . head $ s) of
+    getNumber s = case head s == '\"' || head s == '\'' || (length s == 0) ||(isLetter . head $ s) of
       True -> Nothing
       False -> Just $ (read s :: Double)

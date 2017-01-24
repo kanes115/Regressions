@@ -1,20 +1,21 @@
 
 ==================== FINAL INTERFACE ====================
-2017-01-13 12:23:06.480025 UTC
+2017-01-20 18:51:02.556707 UTC
 
 interface main@main:Main 8001
-  interface hash: 882b37f984f0d263a554e9535d48e64a
-  ABI hash: 190ad963ad41540f4639c9e27eab4131
-  export-list hash: 45a3e649100a68e086fafc8ba490018a
+  interface hash: fbcb1b3e773978740577f9117f1beaed
+  ABI hash: 7ec4664e7fa868cb61ab5396ededf42c
+  export-list hash: 3b3e8fdcc499d541a879e1e8acb412a1
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 75a00b3102c2cd1ea6df7ca4368540f8
   sig of: Nothing
   used TH splices: False
   where
 exports:
+  Main.handler
   Main.main
 module dependencies:
-package dependencies: Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5
+package dependencies: Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM
                       base-4.9.0.0* ghc-prim-0.5.0.0 integer-gmp-1.0.0.1
                       split-0.2.3.1@split-0.2.3.1-IJKK4pOCYGKud0jZImZke
 orphans: base-4.9.0.0:GHC.Base base-4.9.0.0:GHC.Float
@@ -23,10 +24,13 @@ family instance modules: base-4.9.0.0:Control.Applicative
                          base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
                          base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
                          base-4.9.0.0:GHC.TypeLits
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:AppRunner e05f853ccf43bde8b82dfe83321f6390
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:Matrix c42aa2be386c7d6004f690dbfc3233fd
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-8KgimJZiYjs9hASSzNeOg5:Regressions 13e5df431fb01d3b2165b32d23e083f8
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:AppRunner 7b0698b9371205e32e78a185f5e53ed9
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:Matrix d691c83993c7fb261954057918d1a977
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:Regressions 56e9d616d8b2320406368db29e5dd3b8
+import  -/  base-4.9.0.0:Control.Exception 8762ca621bc15a8c1e8e34c703aba1aa
+import  -/  base-4.9.0.0:Control.Exception.Base 4e2b16a4aa23317e444a61cce8fedc63
 import  -/  base-4.9.0.0:GHC.Base 8ed3be81c0707b322f975a84ae1bb816
+import  -/  base-4.9.0.0:GHC.IO.Exception 6616e78328d3d532254cd5e593c9c639
 import  -/  base-4.9.0.0:Prelude b9bddb97799837fe67a8d00939a5b6c3
 import  -/  base-4.9.0.0:System.Environment ee0914a962f5508d0fd404c89ee4999b
 import  -/  base-4.9.0.0:System.IO ad985d7a3fc986e9b9c610fb344d9106
@@ -43,77 +47,159 @@ d6831ef04cb9301b090dfae6f7bb7ec7
   $trModule2 :: GHC.Types.TrName
   {- HasNoCafRefs, Strictness: m1,
      Unfolding: (GHC.Types.TrNameS "main"#) -}
-0b61bf987c383b347c1deaf4f4b4e2e9
+b74fc0cb278c5a41c65c149b471eac79
+  handler :: GHC.IO.Exception.IOError -> GHC.Types.IO ()
+  {- Arity: 2, Strictness: <L,1*U(1*U,1*U,1*U,1*U,A,1*U)><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Main.handler1
+                  `cast`
+                (<GHC.IO.Exception.IOError>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <()>_R)) -}
+a677842956311c6b5ae607dc0c9c5f06
+  handler1 ::
+    GHC.IO.Exception.IOError
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 2, Strictness: <L,1*U(1*U,1*U,1*U,1*U,A,1*U)><S,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (x :: GHC.IO.Exception.IOError)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 GHC.IO.Handle.Text.hPutStr2
+                   GHC.IO.Handle.FD.stdout
+                   (GHC.IO.Exception.$fExceptionIOException_$cshow x)
+                   GHC.Types.True
+                   eta) -}
+c8e6fa5cb3e7cad84b103502f35c4e69
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-a96ef53ece8cb245c5374cc8970de8ae
+78f68ee59c99d0942c32f5e1f6d57b83
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1, Strictness: <S,U>,
-     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
-                 case System.Environment.getArgs1 s of ds1 { (#,#) ipv ipv1 ->
-                 case DataBuilder.getData1
-                        Main.main6
-                        AppRunner.parseCSV2
-                        ipv of ds2 { (#,#) ipv2 ipv3 ->
-                 case AppRunner.$wprepareFile
-                        (case ipv3
-                                `cast`
-                              (DataBuilder.N:DataContainer[0]) of ww { (,) ww1 ww2 ->
-                         case DataBuilder.$wfilterDataContainer
-                                (GHC.Types.[] @ GHC.Types.Int)
-                                ww1
-                                ww2 of ww3 { (#,#) ww4 ww5 ->
-                         (ww4, ww5) `cast` (Sym (DataBuilder.N:NumContainer[0])) } })
-                        (GHC.Types.[] @ GHC.Types.Int)
-                        Main.main5
-                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
-                 case ipv5 of ww { (,) ww1 ww2 ->
-                 case Regressions.gradientDescent1
-                        ww2
-                        Main.main4
-                        Main.main3
-                        Main.main2
-                        (GHC.Types.[]
-                           @ (Regressions.NormalizeConst, Regressions.VariableInd))
-                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
-                 GHC.IO.Handle.Text.hPutStr2
-                   GHC.IO.Handle.FD.stdout
-                   (case ipv7 of ww3 { (,) ww4 ww5 ->
-                    AppRunner.$w$cshow ww4 ww5 ww1 ww2 })
-                   GHC.Types.True
-                   ipv6 } } } } }) -}
-e4e7194ad0ea7bdaa9c49a43d69be9b8
-  main2 :: GHC.Types.Int
-  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 10000000#) -}
-823f7288ac4f7ff5c7e50ae4daeb4667
-  main3 :: GHC.Types.Double
-  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-2##) -}
-2a46e201534067999c58d1561075d289
-  main4 :: GHC.Types.Double
-  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-5##) -}
-61b5993d6df2382345f97697e69c5354
-  main5 :: AppRunner.YColumnIndex
-  {- Unfolding: (case GHC.List.$wlenAcc
-                        @ GHC.Types.Int
-                        (GHC.Types.[] @ GHC.Types.Int)
-                        0# of ww2 { DEFAULT ->
-                 GHC.Types.I# (GHC.Prim.-# 2# ww2) }) -}
-07e7fedc5139807ce7ed37d78caddc75
-  main6 :: [GHC.Types.Char]
+     Unfolding: (\ (eta :: GHC.Prim.State#
+                             GHC.Prim.RealWorld)[OneShot] ->
+                 GHC.Prim.catch#
+                   @ ()
+                   @ GHC.Exception.SomeException
+                   Main.main3 `cast` (GHC.Types.N:IO[0] <()>_R)
+                   Main.main2
+                   eta) -}
+4ecb7ec59a91ee01e76ce509921ce180
+  main10 :: [GHC.Types.Int]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Int
+                   Main.main11
+                   (GHC.Types.[] @ GHC.Types.Int)) -}
+d3aec7d50fb5f55addf7ac98bab3a784
+  main11 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 1#) -}
+ce5d101655c489de1ea33d31893eac2e
+  main12 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
-                   "examples/kwadraty.csv"#) -}
-9ab41425d3a4a3c0c246432afa1d805e
-  main7 ::
+                   "examples/occupancy.csv"#) -}
+c014364671c8ec5b116f9c3e5d2ad38e
+  main13 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
   {- Arity: 1,
      Unfolding: (GHC.TopHandler.runMainIO1
                    @ ()
                    Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+ab4f771dcf83d11e547d01d8518536bc
+  main2 ::
+    GHC.Exception.SomeException
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 2,
+     Unfolding: (\ (e1 :: GHC.Exception.SomeException)[OneShot]
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case e1 of wild { GHC.Exception.SomeException e100 $dException1 e2 ->
+                 case (GHC.Exception.$p1Exception @ e100 $dException1)
+                        `cast`
+                      (Data.Typeable.Internal.N:Typeable[0] <*>_N <e100>_N)
+                        (GHC.Prim.proxy#
+                           @ *
+                           @ e100) of wild1 { Data.Typeable.Internal.TypeRep dt dt1 ds2 ds3 ds4 ->
+                 case GHC.IO.Exception.$fExceptionIOException3 of wild2 { Data.Typeable.Internal.TypeRep dt2 dt3 ds5 ds6 ds7 ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.eqWord# dt dt2) of wild3 {
+                   GHC.Types.False
+                   -> GHC.Prim.raiseIO# @ GHC.Exception.SomeException @ () wild eta
+                   GHC.Types.True
+                   -> case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.eqWord# dt1 dt3) of wild4 {
+                        GHC.Types.False
+                        -> GHC.Prim.raiseIO# @ GHC.Exception.SomeException @ () wild eta
+                        GHC.Types.True
+                        -> Main.handler1
+                             e2
+                               `cast`
+                             (UnsafeCo representational e100 GHC.IO.Exception.IOException)
+                             eta } } } } }) -}
+ad0aba8f0d06d50caf81e16a84a69e23
+  main3 :: GHC.Types.IO ()
+  {- Unfolding: (GHC.Magic.lazy
+                   @ (GHC.Types.IO ())
+                   Main.main4 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
+4dcfa1d409c7de80470a7b88be395074
+  main4 ::
+    GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+  {- Arity: 1,
+     Unfolding: (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case System.Environment.getArgs1 s of ds1 { (#,#) ipv ipv1 ->
+                 case AppRunner.$wparseCSV
+                        Main.main12
+                        Main.main10
+                        Main.main9
+                        ipv of ds2 { (#,#) ipv2 ipv3 ->
+                 case ipv3 of ww { (,) ww1 ww2 ->
+                 case ww2 of ww3 { (,) ww4 ww5 ->
+                 case AppRunner.$wprepareFile
+                        ww1
+                        ww4
+                        ww5
+                        ipv2 of ds3 { (#,#) ipv4 ipv5 ->
+                 case ipv5 of ww7 { (,) ww8 ww9 ->
+                 case AppRunner.$wtrain
+                        ww8
+                        ww9
+                        Main.main5
+                        ipv4 of ds4 { (#,#) ipv6 ipv7 ->
+                 case GHC.IO.Handle.Text.hPutStr2
+                        GHC.IO.Handle.FD.stdout
+                        (AppRunner.$fShowTrainInfo_$cshow ipv7)
+                        GHC.Types.True
+                        ipv6 of ds5 { (#,#) ipv8 ipv9 ->
+                 (# ipv8, GHC.Tuple.() #) } } } } } } } }) -}
+2406c89d06198c97dac252c95f39089b
+  main5 ::
+    (GHC.Types.Double,
+     [(Regressions.NormalizeConst, Regressions.VariableInd)],
+     GHC.Types.Double, GHC.Types.Int)
+  {- HasNoCafRefs,
+     Unfolding: ((Main.main8,
+                  GHC.Types.[]
+                    @ (Regressions.NormalizeConst, Regressions.VariableInd),
+                  Main.main7, Main.main6)) -}
+50c2df814da444ae6910d54799bd7716
+  main6 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 10000000#) -}
+c597b1849694402f3d363f602d5cbecb
+  main7 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-2##) -}
+532f974c1f00496398f8d7a9fe1ba07b
+  main8 :: GHC.Types.Double
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-5##) -}
+4b0071a3007d9384ed128ff4d93ceea6
+  main9 :: GHC.Types.Int
+  {- HasNoCafRefs, Unfolding: (GHC.Types.I# 7#) -}
 vectorised variables:
 vectorised tycons:
 vectorised reused tycons:
