@@ -1,7 +1,5 @@
 import Test.HUnit
 
-import Test.QuickCheck
-
 import Matrix
 import Data.List
 
@@ -10,10 +8,10 @@ main = do
   runTestTT tests
   return ()
 
-tests = TestList (primeTests ++ [transposeTest] ++ [testSquareMatrix])
+tests = TestList (primeTests ++ [transposeTest] ++ [testGetSize])
 
 
-primeTests = (map (primeTest) (primesTo 1000))   -- For lists of size that is a prime matrix should always be a vector
+primeTests = (map (primeTest) (filter (>50) . primesTo $ 3000))   -- For lists of size that is a prime matrix should always be a vector
 
 
 transposeTest = TestCase (assertEqual "transposeM: " (transposeM a) (b))
@@ -22,11 +20,7 @@ transposeTest = TestCase (assertEqual "transposeM: " (transposeM a) (b))
           b = vector [1..100] 1
 
 
-testSquareMatrix = TestCase (assertEqual "SquareMatrix: " (getSize $ toASquareMatrix [1..100]) (10, 10))
-
-
-prop_commutativeAdd :: (Num a) => Matrix a -> Matrix a -> Bool
-prop_commutativeAdd n m = n + m == m + n
+testGetSize = TestCase (assertEqual "SquareMatrix: " (getSize $ toASquareMatrix [1..100]) (10, 10))
 
 
 
