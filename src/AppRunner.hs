@@ -66,10 +66,10 @@ module AppRunner
 
 
 
-    prepareFile :: File -> IO (PreparedFile)
+    prepareFile :: File -> IO (PreparedFile)    -- TODO dać możliwość definiowania, co robimy ze zbiorem treningowym programowi
     prepareFile (numContainer, (columnsToD, yColumnInd)) = (do
         xycon <- return $ getXYContainer (yColumnInd - (length columnsToD)) numContainer
-        newfeat <- return $ createNewFeature 1 2 xycon
+        newfeat <- return $  (JustRes xycon) --createNewFeature 1 2
         if (isError newfeat)
           then do
             throwE (getError newfeat)

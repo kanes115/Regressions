@@ -1,4 +1,5 @@
 import Test.HUnit
+-- import Test.QuickCheck
 
 import Matrix
 import Data.List
@@ -24,8 +25,19 @@ testGetSize = TestCase (assertEqual "SquareMatrix: " (getSize $ toASquareMatrix 
 
 
 
+{-  Testy parametryczne
+prop_przemiennoscDod :: Num a => Matrix a -> Matrix a -> Bool
+prop_przemiennosc n m = n + m == m + n
 
+prop_przechodnioscDod :: Num a => Matrix a -> Matrix a -> Bool
+prop_przechodniosc a b c = (a + b) + c == a + (b + c)
 
+prop_przechodnioscMno :: Num a => Matrix a -> Matrix a -> Bool
+prop_przechodnioscMno a b c = (a * b) * c == a * (b * c)
+
+prop_przemiennoscMno :: Num a => Matrix a -> Matrix a -> Bool
+prop_przemiennoscMno a b = a * b == b * a
+-}
 
 -- Private functions
 primesTo m = sieve [2..m]       {- (\\) is set-difference for unordered lists -}

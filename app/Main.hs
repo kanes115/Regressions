@@ -17,9 +17,9 @@ main = (do
     -- return ()
 
 
-    file <- parseCSV "examples/exampledata.csv" ([], 2)
+    file <- parseCSV "examples/exampledata.csv" ([], 2)   --(ColumnsToDelete, YColumnIndex)
     preparedFile <- prepareFile file
-    trainInfo <- flip train (0.001, [], 0.00001, 10000000) preparedFile
+    trainInfo <- flip train (0.000001, [], 0.000001, 10000000) preparedFile   --(alpha, lista (normconst,var), epsilon, maxiter)
     print trainInfo
     return ()
 

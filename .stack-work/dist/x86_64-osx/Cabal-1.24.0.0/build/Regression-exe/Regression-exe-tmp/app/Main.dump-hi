@@ -1,10 +1,10 @@
 
 ==================== FINAL INTERFACE ====================
-2017-01-27 06:47:50.14771 UTC
+2017-01-27 12:07:52.405456 UTC
 
 interface main@main:Main 8001
-  interface hash: d0410f59239cc5dea2465a72bd1a30cd
-  ABI hash: cc5baf80444ff1d53c1fbacb074db7fe
+  interface hash: fc618a9a716d6118a6d9814fc7e7e640
+  ABI hash: d633c707fcb06b3477efbba8bdf7a307
   export-list hash: 3b3e8fdcc499d541a879e1e8acb412a1
   orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
   flag hash: 75a00b3102c2cd1ea6df7ca4368540f8
@@ -24,7 +24,7 @@ family instance modules: base-4.9.0.0:Control.Applicative
                          base-4.9.0.0:Data.Monoid base-4.9.0.0:Data.Type.Equality
                          base-4.9.0.0:GHC.Generics base-4.9.0.0:GHC.IO.Exception
                          base-4.9.0.0:GHC.TypeLits
-import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:AppRunner 85914f53b8ad33c4f7a4867c781e0c9c
+import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:AppRunner cdab113faf1ee7f7bc49b49ed6431ef3
 import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:Matrix d691c83993c7fb261954057918d1a977
 import  -/  Regression-0.1.0.0@Regression-0.1.0.0-5YhMFDRIyA3ESfKGYZUQrM:Regressions 56e9d616d8b2320406368db29e5dd3b8
 import  -/  base-4.9.0.0:Control.Exception 8762ca621bc15a8c1e8e34c703aba1aa
@@ -69,12 +69,12 @@ a677842956311c6b5ae607dc0c9c5f06
                    (GHC.IO.Exception.$fExceptionIOException_$cshow x)
                    GHC.Types.True
                    eta) -}
-74f55814c390955bd5856576c2b9e0b3
+a10286feb6e3b7d27af5793891b44fe7
   main :: GHC.Types.IO ()
   {- Arity: 1, Strictness: <S,U>,
      Unfolding: InlineRule (0, True, True)
                 Main.main1 `cast` (Sym (GHC.Types.N:IO[0] <()>_R)) -}
-cd67fb852f10343761200bc2c2dcc61f
+7b95dc38304d2b7632c5f3cfb630318e
   main1 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -91,7 +91,7 @@ cd67fb852f10343761200bc2c2dcc61f
   main10 :: [GHC.Types.Char]
   {- Unfolding: (GHC.CString.unpackCString#
                    "examples/exampledata.csv"#) -}
-b644538ac0c8eb002a82d7f5a9873f56
+06c36da435ad53d8fe062dafa7263767
   main11 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -132,12 +132,12 @@ ab4f771dcf83d11e547d01d8518536bc
                                `cast`
                              (UnsafeCo representational e100 GHC.IO.Exception.IOException)
                              eta } } } } }) -}
-51d1900b39cf6798c6ae09e5ed6b9a52
+0da034c965486b5b9c6b67322d4afc0b
   main3 :: GHC.Types.IO ()
   {- Unfolding: (GHC.Magic.lazy
                    @ (GHC.Types.IO ())
                    Main.main4 `cast` (Sym (GHC.Types.N:IO[0] <()>_R))) -}
-bd03171747da42cd418dea77885522d5
+2e97db2e414e7a600cc560fd9a79f620
   main4 ::
     GHC.Prim.State# GHC.Prim.RealWorld
     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
@@ -168,7 +168,7 @@ bd03171747da42cd418dea77885522d5
                         GHC.Types.True
                         ipv6 of ds5 { (#,#) ipv8 ipv9 ->
                  (# ipv8, GHC.Tuple.() #) } } } } } } } }) -}
-832bb9d44ac4afc66c4102c0a1aa310e
+934d5ee03bfb1bb4484a64923bcb142f
   main5 ::
     (GHC.Types.Double,
      [(Regressions.NormalizeConst, Regressions.VariableInd)],
@@ -181,12 +181,12 @@ bd03171747da42cd418dea77885522d5
 50c2df814da444ae6910d54799bd7716
   main6 :: GHC.Types.Int
   {- HasNoCafRefs, Unfolding: (GHC.Types.I# 10000000#) -}
-334a5c95158c92193ee4740c5640bb46
+4c543b3e1e99593a4a7a4b8815f2e420
   main7 :: GHC.Types.Double
-  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-5##) -}
-f01db4704b8665648ee34313425e8a19
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-8##) -}
+f05f1326170448501ce1309622a55d47
   main8 :: GHC.Types.Double
-  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-3##) -}
+  {- HasNoCafRefs, Unfolding: (GHC.Types.D# 1.0e-6##) -}
 5532571e34b13abcaf08d1839310c55e
   main9 :: GHC.Types.Int
   {- HasNoCafRefs, Unfolding: (GHC.Types.I# 2#) -}
